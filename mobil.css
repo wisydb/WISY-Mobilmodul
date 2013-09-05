@@ -1,0 +1,632 @@
+/* Simple Reset */
+html,body,dl,ul,li{margin:0;padding:0;border:0;}
+body{background:#fff;padding:0;color:#000;word-wrap:break-word;-webkit-text-size-adjust:none;}
+h1,h2,h3,h4,h5,h6{font-size:13px;font-weight:bold;margin:0;}
+p img{float:left;margin:0 10px 5px 0;padding:0;}
+img{border:0;max-width:100%;}
+table{width:auto;border-collapse:collapse;border-spacing:0;}
+body,input,select,textarea,button{font-family:Verdana,Helvetica,Arial,sans-serif;line-height:1.5;font-size:13px;}
+/*CLEARFIX*/.clearfix:after{clear:both;content:' ';display:block;font-size:0;line-height:0;visibility:hidden;width:0;height:0}.clearfix{display:inline-block;}* html .clearfix{height:1%}.clearfix{display:block}
+
+/* FARBEN:
+
+Dunkelblau	#003E73
+Mittelblau	#005196
+Hellblau	#1C6DCE
+
+*/
+
+
+body {
+	/*width: 310px;*/
+	
+	line-height: 1.5;
+	font-size: 13px;
+	word-wrap: break-word;
+	-webkit-text-size-adjust: none;
+	padding: 5px;
+	/*margin: 0;*/
+	background: url(/files/mobil_switch/images/bg.gif);
+	
+	width: auto;
+	max-width: 768px;
+	margin: 0 auto;
+}
+
+/* Unnötiges ausblenden */
+body.wisyp_homepage #wisy_resultarea, .wisy_list td, .wisy_list th { display: none; }
+
+
+/* Kopf ---------------------------------------------------------------------------- */
+header { position: relative; background-color: #fff; padding: 120px 10px 1px 10px; margin-bottom: 5px; border-radius: 10px; }
+#logo_start { position: absolute; top: 10px; left: 5px; }
+header .statistik { position: absolute; top: 0; right: 10px; width: 130px; font-size: 11px; }
+header .claim { display: block; margin-top: 0.5em; }
+
+.subheader { 
+	position: relative;
+	font-size: 12px; 
+	text-align: center;
+	padding: 5px;
+	margin: 0 0 5px 0;
+	border-radius: 10px;
+	background-color: #fff; 
+}
+
+.subheader * {
+        clear: both;
+        float: none;
+}
+
+/* Navigationen ----------------------------------------------------------- */
+
+/* Hauptnav nur auf Startseite zeigen: */
+#mainnav, #metanav { display: none; }
+body.wisyp_homepage #mainnav, body.wisyp_homepage #metanav { display: block; }
+
+nav ul { list-style-type: none; padding-left: 0; }
+nav ul li { position: relative; }
+nav ul li a, nav ul li b, #mainnav > h2 {
+	display: block;
+	/*width: 290px;*/
+	color: #fff;
+	font-size: 15px;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	border-radius: 10px;
+	
+	width: auto;
+}
+nav ul li ul { display: none; }
+nav ul li.active ul { display: block; }
+
+nav ul li a, nav ul li b { background-color: #003E73; }
+nav ul li ul li a { font-weight: normal; }
+nav ul li ul li a, nav ul li ul li b { /*width: 260px;*/ padding: 5px 40px 5px 10px; background-color: #1C6DCE; width: auto; }
+nav ul li ul li ul li a, nav ul li ul li ul li b { background-color: #3E9AFF; }
+
+nav ul li a.wisy_help, .wisy_suggestions li a.wisy_help, #wisy_metainfo .wisy_help, #anbieterliste li a.wisy_call, .ac_results .wisy_help {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 25px;
+	color: red;
+	font-weight: bold;
+	text-align: center;
+	z-index: 16;
+	padding: 4px 9px 4px 6px;
+	margin: 0;
+	background-color: #eee;
+	border-radius: 10px;
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border: 1px solid #777;
+}
+
+#mainnav > h2 { background-color: #c2d9e3; color: #333; }
+
+#metanav li a, #metanav li b { background-color: #871D37; }
+#metanav li ul li a, #metanav li ul li b { background-color: #666; }
+#metanav li ul li ul li a, #metanav li ul li ul li b { background-color: #999; }
+
+
+/* Suchfeld ------------------------------------------------------------------------ */
+
+#wisy_searcharea {
+	position: relative;
+	padding: 10px;
+	margin-bottom: 5px;
+	background-color: #698196; /*#4C7496; */
+	border-radius: 10px;
+}
+
+#wisy_searchinput { width: 95%; margin-bottom: 5px; padding: 0.1em 0.5em 0.2em; font-size: 16px; }
+#wisy_searcharea .clearbtn {
+	position: absolute;
+	top: 17px;
+	right: 4%;
+	z-index: 7;
+	color: #fff;
+	font-size: 18px;
+	background-color: #ddd;
+	border-radius: 10px;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	line-height: 14px;
+}
+
+#wisy_searcharea label { font-weight: bold; color: #fff; }
+.wisy_searchbtn { cursor: pointer; font-size: 12px; margin-right: 0; }
+#wisy_kurssuche, #wisy_anbietersuche { margin-right: 5px; }
+
+/******************************************************************************
+ autocomplete styles
+ ******************************************************************************/
+
+.ac_results {
+	padding: 0px;
+	border: 1px solid #222; border-top: 1px solid #ccc; border-left: 1px solid #ccc;
+	background-color: white;
+	overflow: hidden;
+	z-index: 699;
+}
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	z-index: 699;
+	background-color: #fff;
+}
+.ac_results li {
+	position: relative;
+	margin: 0px;
+	padding: 10px;
+	cursor: default;
+	display: block;
+	/* 
+	it is very important, if line-height not setted or setted 
+	in relative units scroll will be broken in firefox
+	*/
+	line-height: 14px;
+	overflow: hidden;
+}
+.ac_results .wisy_help { line-height: 24px; border-radius: 10px; border-color: #aaa; text-decoration: none; }
+
+.ac_loading { background: white url('/core20/img/ajax-indicator-2-16x16.gif') right center no-repeat !important; }
+.ac_odd { background-color: #eee; }
+.ac_more a { color: #444; font-weight: bold; text-decoration: none; }
+.ac_over { background-color: #444; color: #fff; }
+.ac_over .ac_more a { color: #fff; }
+.ac_tag_type {
+	font-size: 11px;
+	font-style: italic;
+	color: #AAA;
+}
+
+/* Favoriten --------------------------------------------------------------------------  */
+
+#wisy_favs { }
+#wisy_favs a { 
+	display: block;
+	margin-bottom: 5px;
+	color: #fff;
+	background-color: #999;
+	border-radius: 10px;
+	font-weight: bold;
+	text-decoration: none;
+}
+#wisy_favs_anzeigen { float: left; width: 190px; margin-right: 5px; padding: 5px 10px; }
+#wisy_favs_anzeigen .fav_star { color: #F4BE04; }
+a#wisy_fav_mailprint, a#fav_delete_all { float: left; width: 45px; color: #f8f8f8; text-align: center; padding: 5px 0; }
+a#wisy_fav_mailprint { margin-right: 5px; text-indent: -200%; overflow: hidden; background: #999 url(images/mail_ws.png) no-repeat center center; }
+
+/* Suggestions -------------------------------------------------------------------------- */
+
+.wisy_topnote, .wisy_suggestions h3 { padding: 5px 10px; margin: 0 0 5px 0; background-color: #fff; border-radius: 10px;}
+.wisy_suggestions h3 { font-weight: normal; color: #fff; background-color: #005196; }
+.wisy_suggestions ul { list-style-type: none; padding-left: 0; }
+.wisy_suggestions ul li { position: relative; }
+.wisy_suggestions ul li > span {
+	display: block;
+	/*width: 290px;*/
+	margin-bottom: 5px;
+	color: #fff;
+	font-size: 15px;
+	padding: 5px 10px;
+	border-radius: 10px;
+	background-color: #1C6DCE;
+	
+	width: auto;
+}
+.wisy_suggestions ul li .ac_tag_type { font-size: 12px; color: #aaa}
+.wisy_suggestions ul li a { color: #fff; text-decoration: none; }
+
+/* Suchergebnisse -------------------------------------------------------------------------- */
+
+#wisy_resultarea { position: relative; }
+#wisy_resultarea h1 { }
+.wisy_suchergebnisse { color: #fff; padding: 5px 10px; margin: 0 0 5px 0; background-color: #003E73; border-radius: 10px; }
+.wisy_suchbegriff { font-style: italic; }
+.wisy_select_order { position: relative; }
+.wisy_select_order input {
+	position: absolute;
+	width: 0;
+	height: 0;
+	background: none;
+	overflow: hidden;
+	padding: 0;
+	border: 1em solid transparent;
+	border-width: 1.5em 1em;
+	cursor: pointer;
+}
+.wisy_select_order .order_up { 	border-bottom-color: #aaa; margin-left: 1em; bottom: 0.3em; }
+.wisy_select_order .order_up.active, .wisy_select_order .order_up:hover { border-bottom-color: #fff; }
+.wisy_select_order .order_dn { 	border-top-color: #aaa; margin-left: 4em; top: 0.4em; }
+.wisy_select_order .order_dn.active, .wisy_select_order .order_dn:hover { border-top-color: #fff; }
+
+/* Kursliste / Anbieterliste ---------------------------------------------------------------------- */
+
+.wisy_list li {
+	display: block;
+	position: relative;
+}
+#kursliste li a, #anbieterliste li a {
+	display: block;
+	/*width: 265px;*/
+	color: #444;
+	font-size: 11px;
+	line-height: 15px;
+	background-color: #eee;
+	margin-bottom: 5px;
+	min-height: 32px;
+	text-decoration: none;
+	padding: 5px 35px 5px 10px;
+	border-radius: 10px;
+	
+	width: auto;
+}
+.wisy_list li a .wisy_kurstitel, .wisy_list li a .wisy_anbietertitel {
+	display: block;
+	font-size: 13px;
+	font-weight: bold;
+	color: #000;
+}
+.wisy_list li a .wisy_anbieter { display: block; color: #666; font-style: italic; }
+.wisy_list li a .wisy_durchfuehrung { line-height: 13px; }
+.wisy_list li a .wisy_durchfuehrung img { vertical-align: middle; }
+.wisy_list li a .wisy_entfernung { position: absolute; bottom: 4px; right: 5px; font-weight: bold; }
+.wisy_list li .wisy_homepage, .wisy_list li .wisy_email { display: block; }
+#anbieterliste li a { color: #444; }
+
+#anbieterliste li a.wisy_call {
+	width: 32px;
+	height: 32px;
+	min-height: 0;
+	text-indent: -200%;
+	overflow: hidden;
+	padding: 0;
+	background: #fff url(images/phone_g_s.png) no-repeat center center;
+	border: none;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+/* FAV */
+.fav_item {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 16px;
+	color: #bbb;
+	padding: 4px 8px;
+	background-color: #fff;
+	border-radius: 10px;
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+	cursor: pointer;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+.fav_item.fav_selected { color: #F4BE04; }
+body.wisyp_kurs .fav_item { background-color: #eee; }
+
+
+/* Kursdetails -------------------------------------------------------------------------- */
+
+/* Suche nicht auf Kursdetailseite anzeigen */
+.wisyp_kurs #wisy_searcharea { display: none; }
+
+#wisy_resultsummary { padding: 10px 35px 20px 10px; margin: 0 0 -10px 0; background-color: #fff; border-radius: 10px 10px 0 0; }
+#wisy_resultsummary h2 { font-weight: normal; font-size: smaller; }
+
+.wisy_resultsection { display: none; }
+.wisy_resultsection.active, .nojs .wisy_resultsection { 
+	display: block;
+	background-color: #fff;
+	padding: 5px 10px 20px 10px;
+	margin: 0 0 5px 0;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+.nojs .wisy_resultsection { border-radius: 10px; }
+.nojs #sections_karte, .nojs #wisy_resulttabs { display: none; }
+
+#sections_karte { height: 320px; padding: 0; }
+#wisy_map2 { width: 100%; height: 320px; }
+#wisy_map2 img { max-width: inherit; }
+
+#sections_karte .wisy_vcardtitle { display: none; }
+
+#sections_kontakt {
+	background: transparent;
+	padding: 0;
+/*	margin: 0;
+	border-radius: 0;*/
+}
+#sections_kontakt #wisy_anbieterdetails { border-top-left-radius: 0; border-top-right-radius: 0; padding-top: 18px; }
+
+#wisy_resulttabs { background-color: #fff; }
+#wisy_resulttabs li { display: block; float: left; width: 25%; }
+#wisy_resulttabs li a { 
+	float: left;
+	/*width: 76px;*/
+	font-size: 12px;
+	color: #005196;
+	text-align: center;
+	background-color: #eee;
+	padding: 10px 0 8px 0;
+	margin: 0;
+	border: 1px solid #ccc;
+	border-left: none;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	-webkit-box-shadow: 0 -1px 2px 0px rgba(0, 0, 0, .3);
+	box-shadow: 0 -1px 2px 0px rgba(0, 0, 0, .3);
+	
+	width: 100%;
+}
+/*#wisy_resulttabs li#tabs_termine a { width: 78px; }*/
+#wisy_resulttabs li.active a {
+	background-color: #fff;
+	border-bottom: 1px solid #fff;
+}
+
+.wisy_resultsection.active#sections_termine { padding: 5px 0 10px 0; }
+.wisy_anzahltermine { font-weight: bold; margin: 1em 0 0.5em 10px; }
+
+#sections_info li { list-style-position: inside; }
+#sections_info img { display: none; }
+
+#sections_termine .wisy_durchfuehrung { line-height: 1.2em; padding: 0.7em 10px; background-color: #eee; }
+#sections_termine .wisy_durchfuehrung.wisy_even { background-color: #fff; }
+#sections_termine .wisy_durchfuehrung img { vertical-align: middle; }
+
+#sections_termine .wisy_beginn, #sections_termine .wisy_ort, #sections_termine .wisy_preis { 
+	display: inline-block;
+	font-weight: bold;
+	color: #444;
+	margin-top: 0.5em;
+}
+#sections_termine .wisy_stunden, #sections_termine .wisy_maxteilnehmer,
+#sections_termine .wisy_preishinweise, #sections_termine .wisy_dauer,
+#sections_termine .wisy_bemerkungen, #sections_termine .wisy_beginnoptionen, #sections_termine .wisy_zeitvonbis, .wisy_strasse { font-size: smaller; }
+#sections_termine .wisy_preishinweise { font-weight: normal; }
+
+#sections_termine .wisy_bemerkungen { display: block; font-style: italic; padding-top: 0.2em; margin-top: 0.5em; border-top: 1px dotted #444; }
+#sections_termine .wisy_bemerkungen p { margin: 0; }
+
+.wisy_kursinfo {
+	position: relative;
+	font-size: 12px;
+	border-top: 1px solid #ddd;
+	padding-top: 0.5em;
+	line-height: 20px;
+}
+.wisy_kursinfo .wisy_help {
+	color: #f00;
+	font-weight: bold;
+	text-decoration: none;
+	background-color: #eee;
+	border-radius: 5px;
+	padding: 2px 15px;
+}
+
+#wisy_metainfo, .wisy_feedback { 
+	position: relative;
+	font-size: 12px;
+	padding: 10px 40px 10px 10px;
+	margin-bottom: 5px;
+	background-color: #eee;
+	border-radius: 10px;
+}
+#wisy_metainfo .wisy_help { 
+	font-size: 13px;
+	background-color: #fff;
+	text-decoration: none;
+	border: none;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+#wisy_feedback_line1 { margin: 0; }
+#wisy_feedback_line2 { margin-bottom: 0; }
+#wisy_feedback_yesno { display: block; padding-top: 0.5em; }
+#wisy_feedback_yesno a {
+	display: block;
+	float: left;
+	background-color: #999;
+	width: 80px;
+	height: 1em;
+	padding: 0.5em 0;
+/*	text-indent: -200%;
+	overflow: hidden;*/
+	margin-right: 10px;
+	border-radius: 10px;
+	
+	text-align: center;
+	line-height: 1em;
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.wisy_badqualitybanner {
+	position: relative;
+	font-weight: bold;
+	color: #f00;
+	margin: 5px 0 -10px 0;
+	padding: 0 10px 25px 10px;
+	background: #fff;
+}
+.wisy_badqualitybanner img {
+	float: left;
+	margin-right: 10px;
+}
+.wisy_badqualitybanner a.wisy_help {
+	display: block;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+.wisy_badqualitybanner a.wisy_help img {
+	padding: 10px;
+	background-color: #D60005;
+	border-radius: 10px;
+	margin: 0;
+}
+
+/* Anbieterdetails ----------------------------------------------------------------- */
+
+#wisy_anbietersummary, #wisy_anbieterdetails, #wisy_alleangebote { padding: 10px; margin-bottom: 5px; background-color: #fff; border-radius: 10px; }
+#wisy_anbieterdetails.min { padding-bottom: 40px; }
+#wisy_alleangebote { display: block; color: #fff; background-color: #999; font-weight: bold; text-decoration: none; text-align: center; }
+
+#wisy_anbietersummary img { display: none; }
+#wisy_anbietersummary li { list-style-position: inside; }
+
+
+/* Aktionsbuttons ------------------------------------------------------------------- */
+
+.wisy_actionbuttons { margin: 20px -10px 5px 0; }
+.wisy_actionbuttons a {
+	display: block;
+	float: left;
+	background-color: #999;
+	width: 90px;
+	height: 1em;
+	padding: 1em 0;
+	text-indent: -200%;
+	overflow: hidden;
+	margin-right: 10px;
+	border-radius: 10px;
+	
+	text-align: center;
+	line-height: 1em;
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}
+.wisy_actionbuttons .wisy_call { background: #999 url(images/phone_w.png) no-repeat center center; }
+.wisy_actionbuttons .wisy_email { background: #999 url(images/mail_w.png) no-repeat center center; }
+.wisy_actionbuttons .wisy_homepage { background: #999 url(images/url_w.png) no-repeat center center; }
+
+
+/* Minimierung -------------------------------------------------------------------- */
+
+.automin.min {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+.automin.min.mh50 {
+	max-height: 50px;
+}
+.automin.min.mh100 {
+	max-height: 100px;
+}
+.automin.min.mh150 {
+	max-height: 150px;
+}
+.automin.min.mh200 {
+	max-height: 200px;
+}
+.automin.min:after {
+	position: absolute;
+	/*width: 295px;*/
+	left: 0;
+	bottom: 0;
+	color: #005196;
+	background-color: #eee;
+	border-top: 1px solid #005196;
+	font-weight: bold;
+	content: 'weiterlesen...';
+	padding: 5px 5px 5px 10px;
+	border-radius: 0 0 10px 10px;
+	
+	width: 100%;
+}
+
+/* Paginierung -------------------------------------------------------------------- */
+
+.wisy_paginate { position: relative; margin-bottom: 5px; }
+.wisy_paginate .prev, .wisy_paginate .next {
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 70px;
+	background-color: #003E73;
+	margin-bottom: 5px;
+
+	text-decoration: none;
+	padding: 5px 20px;
+	color: #fff;
+	font-weight: bold;
+	height: 22px;
+	width: 20px;
+	text-align: center;
+	border-radius: 10px;
+}
+.wisy_paginate .prev { left: 0; border-radius: 10px 0 0 10px; }
+.wisy_paginate .next { right: 0; border-radius: 0 10px 10px 0; }
+.wisy_paginate .status {
+	background-color: #fff;
+	/*width: 140px;*/
+	height: 22px;
+	padding: 5px 20px;
+	margin: 0 auto;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 10px;
+	
+	width: auto;
+}
+
+
+/* GLOSSAR ----------------------------------------------------------------- */
+.wisy_glossar {
+	padding: 10px;
+	background-color: #eee;
+	margin-bottom: 5px;
+	color: #333;
+	border-radius: 10px;
+}
+.wisy_glossar h1, .wisy_glossar h2 {
+	font-size: 13px;
+	font-weight: bold;
+}
+.wisy_glossar ul {
+	list-style-type: square;
+	list-style-position: outside;
+}
+.wisy_glossar ol, .wisy_glossar ul {
+	margin-top: 4px;
+	padding-left: 20px;
+}
+.wisy_glossar li {
+	margin-bottom: 8px;
+}
+.wisy_glossar textarea {
+	width: 100%;
+}
+.wisy_glossar img { display: none; }
+
+
+/* FOOTER -------------------------------------------------------------------------- */
+
+#fuss { font-size: 10px; text-align: center; background-color: #fff; padding: 10px; border-radius: 10px; }
+#fuss p { margin: 0; }
+#fuss a { color: #000; }
+
+#wisy_copyright_footer {
+	text-align: center; 
+	padding: 10px;
+	margin: 0 0 5px 0;
+	border-radius: 10px;
+	background-color: #fff; 
+}
+#wisy_copyright_footer a[href^='javascript'] { display: none; }
