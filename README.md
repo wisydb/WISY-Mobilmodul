@@ -10,5 +10,5 @@ Aktuelle Version im Livebetrieb: http://m.kursportal.info
 
 ## Was ist WISY?
 
-http://de.wikipedia.org/wiki/WISY
-http://www.weiterbildung-hamburg.de/ueber-uns/wer-wir-sind.php
+* http://de.wikipedia.org/wiki/WISY
+* http://www.weiterbildung-hamburg.de/ueber-uns/wer-wir-sind.php
