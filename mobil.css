@@ -351,7 +351,12 @@ body.wisyp_kurs .fav_item { background-color: #eee; }
 #sections_kontakt #wisy_anbieterdetails { border-top-left-radius: 0; border-top-right-radius: 0; padding-top: 18px; }
 
 #wisy_resulttabs { background-color: #fff; }
+
 #wisy_resulttabs li { display: block; float: left; width: 25%; }
+#wisy_resulttabs.tabcount3 li { width: 33%; }
+#wisy_resulttabs.tabcount2 li { width: 50%; }
+#wisy_resulttabs.tabcount1 li { width: 100%; }
+
 #wisy_resulttabs li a { 
 	float: left;
 	/*width: 76px;*/

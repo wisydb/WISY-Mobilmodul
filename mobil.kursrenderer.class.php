@@ -79,71 +79,115 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 		}
 		
 		// TABS
-		echo '<nav id="wisy_resulttabs" class="clearfix">'
-		.		'<ul>'
-		.			'<li id="tabs_info" class="active"><a href="#sections_info">Was</a></li>'
-		.			'<li id="tabs_termine"><a href="#sections_termine">Wann Wo</a></li>'
-		.			'<li id="tabs_karte"><a href="#sections_karte">Karte</a></li>'
-		.			'<li id="tabs_kontakt"><a href="#sections_kontakt">Kontakt</a></li>'
-		.		'</ul>'
-		.	'</nav>';
+		// Anhand der Portal-Einstellungen bis zu 4 Tabs ausgeben
+		// Erlaubte Inhaltsbereiche sind:
+		$erlaubteInhalte = array('info', 'termine', 'karte', 'kontakt');
+		
+		$tabtitel = trim($this->framework->iniRead('mobil.kursdetails.tabs.titel'));
+		$tabinhalte = trim($this->framework->iniRead('mobil.kursdetails.tabs.inhalt'));
+		
+		// Standardeinstellungen für TABs
+		if($tabtitel == '') $tabtitel = 'Was, Wann Wo, Karte, Kontakt';
+		if($tabinhalte == '') $tabinhalte = 'info, termine, karte, kontakt';
+
+		$tabtitel = explode(',', $tabtitel);
+		$tabinhalte = explode(',', $tabinhalte);
+				
+		// Tabs zusammenbauen
+		$tabs = array();
+		foreach($tabinhalte as $key => $inhalt) {
+			$tabinhalte[$key] = trim($inhalt);
+			if(array_search(trim($inhalt), $erlaubteInhalte) !== false && array_key_exists($key, $tabtitel)) {
+				$tabs[] = array(trim($inhalt), trim($tabtitel[$key]));				
+			}
+		}
+		
+		// Tabs ausgeben anhand Portaleinstellungen oder Standardeinstellungen
+		// Anzahl der Tabs als Klasse damit per CSS die Tabbreite auf 1/4, 1/3 usw. eingestellt werden kann
+		echo '<nav id="wisy_resulttabs" class="clearfix tabcount'. count($tabs) .'"><ul>';
+		$firstTab = true;
+		$activeSection = '';
+		foreach($tabs as $tab) {
+			$activeClass = '';
+			if($firstTab) {
+				$activeClass = ' class="active"';
+				$activeSection = $tab[0];
+				$firstTab = false;
+			}
+			echo '<li id="tabs_'. $tab[0] .'"'. $activeClass .'><a href="#sections_'. $tab[0] .'">'. $tab[1] .'</a></li>';
+		}
+		echo '</ul></nav>';
 		
 		// SECTION: Info
-		echo '<div id="sections_info" class="wisy_resultsection active mh200 automin_nojs">';
+		if(array_search('info', $tabinhalte) !== false) {
 			
-		// Beschreibung ausgeben
-		if ($freigeschaltet==0) { echo '<p class="wisy_statustext">Dieses Angebot ist in Vorbereitung.</p>'; }
-		else if ($freigeschaltet==3) { echo '<p class="wisy_statustext">Dieses Angebot ist abgelaufen.</p>'; }
-		else if ($freigeschaltet==2) { echo '<p class="wisy_statustext">Dieses Angebot ist gesperrt.</p>'; }
+			$activeClass = '';
+			if($activeSection == 'info') $activeClass = ' active';
+			
+			echo '<div id="sections_info" class="wisy_resultsection'. $activeClass .' mh200 automin_nojs">';
+			
+			// Beschreibung ausgeben
+			if ($freigeschaltet==0) { echo '<p class="wisy_statustext">Dieses Angebot ist in Vorbereitung.</p>'; }
+			else if ($freigeschaltet==3) { echo '<p class="wisy_statustext">Dieses Angebot ist abgelaufen.</p>'; }
+			else if ($freigeschaltet==2) { echo '<p class="wisy_statustext">Dieses Angebot ist gesperrt.</p>'; }
 
-		if( $freigeschaltet!=2 || $_REQUEST['showinactive']==1 )
-		{
-			
-			if( $beschreibung != '' ) {
-				$wiki2html =& createWisyObject('WISY_WIKI2HTML_CLASS', $this->framework);
-				echo $wiki2html->run($beschreibung);
-			}
-			
-			// Tabellarische Infos ... jetzt als Aufzählung
-			$list = '';
-			
-			// ... Stichwoerter
-			$stichwoerter = $this->framework->loadStichwoerter($db, 'kurse', $kursId);
-			if( sizeof($stichwoerter) )
+			if( $freigeschaltet!=2 || $_REQUEST['showinactive']==1 )
 			{
-				$list .= $this->framework->writeStichwoerter($db, 'kurse', $stichwoerter);
-			}
+			
+				if( $beschreibung != '' ) {
+					$wiki2html =& createWisyObject('WISY_WIKI2HTML_CLASS', $this->framework);
+					echo $wiki2html->run($beschreibung);
+				}
+			
+				// Tabellarische Infos ... jetzt als Aufzählung
+				$list = '';
+			
+				// ... Stichwoerter
+				$stichwoerter = $this->framework->loadStichwoerter($db, 'kurse', $kursId);
+				if( sizeof($stichwoerter) )
+				{
+					$list .= $this->framework->writeStichwoerter($db, 'kurse', $stichwoerter);
+				}
 
-			// ... Bildungsurlaubsnummer 
-			if (($wisyPortalSpalten & 128) > 0 && $bu_nummer)
-			{
-				$list .= '<li>Bildungsurlaubsnummer</li>';
-			}
+				// ... Bildungsurlaubsnummer 
+				if (($wisyPortalSpalten & 128) > 0 && $bu_nummer)
+				{
+					$list .= '<li>Bildungsurlaubsnummer</li>';
+				}
 
-			if( $list != '' ) 
-			{
-				echo '<div class="wisy_kursinfo">';
-				echo '<strong>Suchmerkmale:</strong>';
-				echo '<ul>' . $list . '</ul>';
-				echo '</div>';
+				if( $list != '' ) 
+				{
+					echo '<div class="wisy_kursinfo">';
+					echo '<strong>Suchmerkmale:</strong>';
+					echo '<ul>' . $list . '</ul>';
+					echo '</div>';
+				}
 			}
 			
 			// ENDE SECTION: Info
 			echo '</div><!-- /#sections_info -->';
+		}
 			
-			// flush, Rest kann dann "im Hintergrund" laden
-			flush();
+		// flush, Rest kann dann "im Hintergrund" laden
+		flush();
 		
-			// SECTION: Termine
-			echo '<div id="sections_termine" class="wisy_resultsection">';
+		// SECTION: Termine
+		if(array_search('termine', $tabinhalte) !== false) {
 			
+			$activeClass = '';
+			if($activeSection == 'termine') $activeClass = ' active';
+		
+			echo '<div id="sections_termine" class="wisy_resultsection'. $activeClass .'">';
+			
+			if( $freigeschaltet!=2 || $_REQUEST['showinactive']==1 )
+			{
 
-			// Durchfuehrungen vorbereiten
-			$showAllDurchf = 1; // Immer alle Durchführungen zeigen
+				// Durchfuehrungen vorbereiten
+				$showAllDurchf = 1; // Immer alle Durchführungen zeigen
 			
-			$durchfClass =& createWisyObject('WISY_DURCHF_CLASS', $this->framework);
-			$durchfuehrungenIds = $durchfClass->getDurchfuehrungIds($db, $kursId, $showAllDurchf);
-			echo '<p class="wisy_anzahltermine">';
+				$durchfClass =& createWisyObject('WISY_DURCHF_CLASS', $this->framework);
+				$durchfuehrungenIds = $durchfClass->getDurchfuehrungIds($db, $kursId, $showAllDurchf);
+				echo '<p class="wisy_anzahltermine">';
 				if( sizeof($durchfuehrungenIds)==0 ) {
 					echo $this->framework->iniRead('durchf.msg.keinedf', 'Keine Durchf&uuml;hrungen bekannt.');
 				}
@@ -153,14 +197,14 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 				else {
 					echo  sizeof($durchfuehrungenIds). ' Durchf&uuml;hrungen:';
 				}
-			echo '</p>';
+				echo '</p>';
 		
-			// Durchfuehrungen: init map (global $this->framework->map is used in formatDurchfuehrung())
-			$this->framework->map =& createWisyObject('WISY_GOOGLEMAPS_CLASS', $this->framework);
+				// Durchfuehrungen: init map (global $this->framework->map is used in formatDurchfuehrung())
+				$this->framework->map =& createWisyObject('WISY_GOOGLEMAPS_CLASS', $this->framework);
 		
-			// Durchfuehrungen ausgeben
-			if( sizeof($durchfuehrungenIds) )
-			{
+				// Durchfuehrungen ausgeben
+				if( sizeof($durchfuehrungenIds) )
+				{
 										
 					$maxDurchf = intval($this->framework->iniRead('details.durchf.max'));
 					if( $maxDurchf <= 0 || $showAllDurchf )
@@ -185,46 +229,66 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 							}
 						echo '</div>';
 					}
-				if( $moreLink != '' )
-				{
-					echo "<p><a href=\"".$this->framework->getUrl('k', array('id'=>$kursId, 'showalldurchf'=>1))."\">$moreLink</a></p>";
+					if( $moreLink != '' )
+					{
+						echo "<p><a href=\"".$this->framework->getUrl('k', array('id'=>$kursId, 'showalldurchf'=>1))."\">$moreLink</a></p>";
+					}
 				}
 			}
-		
+
 			// ENDE SECTION: Termine
 			echo '</div><!-- /#sections_termine -->';
+		}
 		
-			// SECTION: Karte
-			echo '<div id="sections_karte" class="wisy_resultsection">';
+		// SECTION: Karte
+		if(array_search('karte', $tabinhalte) !== false) {
+			
+			$activeClass = '';
+			if($activeSection == 'karte') $activeClass = ' active';
 		
-			// map
-			if( $this->framework->map->hasPoints() && $_SERVER['HTTPS']!='on' )
+			echo '<div id="sections_karte" class="wisy_resultsection'. $activeClass .'">';
+			
+			if( $freigeschaltet!=2 || $_REQUEST['showinactive']==1 )
 			{
-				echo $this->framework->map->render();
+		
+				// map
+				if( $this->framework->map->hasPoints() && $_SERVER['HTTPS']!='on' )
+				{
+					echo $this->framework->map->render();
+				}
 			}
 		
 			// ENDE SECTION: Karte
 			echo '</div><!-- /#sections_karte -->';
+		}
 		
-			// SECTION: Kontakt
-			echo '<div id="sections_kontakt" class="wisy_resultsection">';
+		// SECTION: Kontakt
+		if(array_search('kontakt', $tabinhalte) !== false) {
+			
+			$activeClass = '';
+			if($activeSection == 'kontakt') $activeClass = ' active';
+			
+			echo '<div id="sections_kontakt" class="wisy_resultsection'. $activeClass .'">';
+			
+			if( $freigeschaltet!=2 || $_REQUEST['showinactive']==1 )
+			{
 		
-			// visitenkarte des anbieters
-			$anbieterRenderer =& createWisyObject('WISY_ANBIETER_RENDERER_CLASS', $this->framework);
-			echo $anbieterRenderer->renderDetailsMobile($db, $anbieterId, $kursId);
+				// visitenkarte des anbieters
+				$anbieterRenderer =& createWisyObject('WISY_ANBIETER_RENDERER_CLASS', $this->framework);
+				echo $anbieterRenderer->renderDetailsMobile($db, $anbieterId, $kursId);
+			}
 			
 			// ENDE SECTION: Kontakt
 			echo '</div><!-- /#sections_kontakt -->';
+		}
 			
-			// Vollständigkeit, Feedback
-			if( $vollst['msg'] != '' )
-			{
-				echo '<div id="wisy_metainfo" class="'.$this->framework->getAllowFeedbackClass().'">';
-				echo $vollst['msg'];
-				echo '</div><!-- /#wisy_metainfo -->';
-			}
-	
-		} // freigeschaltet
+		// Vollständigkeit, Feedback
+		if( $vollst['msg'] != '' )
+		{
+			echo '<div id="wisy_metainfo" class="'.$this->framework->getAllowFeedbackClass().'">';
+			echo $vollst['msg'];
+			echo '</div><!-- /#wisy_metainfo -->';
+		}
 	
 		echo '</div><!-- /#wisy_resultarea -->';
 	
