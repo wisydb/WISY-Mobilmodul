@@ -368,8 +368,13 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 					$cell .= '</span>';
 					echo $cell;
 				}
-			}	
-			echo '  </a></li>' . "\n";
+			}
+			// Mehrtext anzeigen, falls in Portal-Einstellungen ein Text dafür eingegeben wurde
+			if( ($mehrtext = trim($this->framework->iniRead('mobil.kursliste.mehrtext'))) != '') {
+				echo '  <span class="mehrtext">'. $mehrtext .'</span></a></li>' . "\n";
+			} else {
+				echo '  </a></li>' . "\n";
+			}
 		}
 	}
 	
