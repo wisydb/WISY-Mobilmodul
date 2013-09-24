@@ -100,6 +100,20 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			$stadtteil	= stripslashes($record['stadtteil']);
 			$land		= stripslashes($record['land']);
 			
+			// Link zu Ort auf Google Maps Extern auf Detailseite anzeigen, falls
+			// 	mobil.kursdetails.durchf.maplink = 1
+			if(trim($this->framework->iniRead('mobil.kursdetails.durchf.maplink')) == 1 && $ort && $strasse) {
+				$maps_ort = $strasse;
+				if($plz) $maps_ort .= ', ' . $plz;
+				if($ort) $maps_ort .= ', ' . $ort;
+				if($land) {
+					$maps_ort .= ', ' . $land;
+				} else {
+					$maps_ort .= ', Deutschland';
+				}
+				$mapslink_html = ' <a class="wisy_ort_maplink" target="_blank" href="http://maps.google.com/maps?q=' . urlencode($maps_ort) .' ">Adresse in Google Maps</a>';
+			}
+			
 			if( $ort && $stadtteil ) {
 				if( strpos($ort, $stadtteil)===false ) {
 					$ort = '<strong>'. htmlentities($ort) . '</strong>-' . htmlentities($stadtteil);
@@ -146,6 +160,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			if($details) {
 				$ort_output = $ort? '<br /><span class="wisy_ort">' . $ort . '</span>' : '';
 				if($strasse_html) $ort_output .= ', ' . $strasse_html;
+				if($mapslink_html) $ort_output .= $mapslink_html;
 			} else {
 				echo $ort? ', <span class="wisy_ort">' . $ort . '</span>' : '';
 			}
