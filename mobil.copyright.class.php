@@ -49,7 +49,7 @@ class MOBIL_COPYRIGHT_CLASS extends WISY_COPYRIGHT_CLASS
 		// search by user id
 		if( $copyright == '' )
 		{
-			$sql = "SELECT settings x FROM user s, $table a
+			$sql = "SELECT s.settings x FROM user s, $table a
 					 WHERE a.user_created=s.id AND a.id=$recordId;";
 			$db->query($sql);
 			if( $db->next_record() )
@@ -71,7 +71,7 @@ class MOBIL_COPYRIGHT_CLASS extends WISY_COPYRIGHT_CLASS
 		// search by group id
 		if( $copyright == '' )
 		{
-			$sql = "SELECT settings x FROM user_grp s, $table a
+			$sql = "SELECT s.settings x FROM user_grp s, $table a
 					 WHERE a.user_grp=s.id AND a.id=$recordId;";
 			$db->query($sql);
 			if( $db->next_record() )
