@@ -176,19 +176,19 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 					$kurstage = $this->formatKurstage(intval($record['kurstage']));
 				}
 				
-				echo ' <span class="wisy_kurstage">' . $this->formatTagescode($bu? 'bu' : ($fu? 6: $record['tagescode']), $details, $kurstage) . '</span>';
+				echo '<span class="wisy_kurstage"> ' . $this->formatTagescode($bu? 'bu' : ($fu? 6: $record['tagescode']), $details, $kurstage) . '</span>';
 		}
 		
 		// DAUER
 		if (($wisyPortalSpalten & 4) > 0)
 		{
-			echo $this->formatDauer($record['dauer'], $record['stunden'], ' <span class="wisy_dauer">%1</span>', '&nbsp;<span class="wisy_stunden">(%1)</span>');
+			echo $this->formatDauer($record['dauer'], $record['stunden'], '<span class="wisy_dauer"> %1</span>', '<span class="wisy_stunden"> (%1)</span>');
 		}
 		
 		// TEILNEHMER
 		if($details && $record['teilnehmer'])
 		{
-			echo ' <span class="wisy_maxteilnehmer">max. ' . intval($record['teilnehmer']) . ' Teilnehmer</span>';
+			echo '<span class="wisy_maxteilnehmer"> max. ' . intval($record['teilnehmer']) . ' Teilnehmer</span>';
 		}
 		
 		// ORT (auf Kursdetailseite)
@@ -199,15 +199,15 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 		{
 			$preisAttr = ($details && $record['preishinweise']!='')? ' align=\"right\"' : ' nowrap="nowrap"';
 			$temp = $this->formatPreis($record['preis'], $record['sonderpreis'], $record['sonderpreistage'], $record['beginn'], $details? stripslashes($record['preishinweise']) : '');
-			echo $details ? '<br />' : ' ';
-			echo '<span class="wisy_preis">' . $this->shy($temp) . '</span>';
+			echo $details ? '<br />' : '';
+			echo '<span class="wisy_preis"> ' . $this->shy($temp) . '</span>';
 		}
 		
 		// NR
 		if (($wisyPortalSpalten & 64) > 0)
 		{
 			$nr = stripslashes($record['nr']);
-			echo $nr? ' <span class="wisy_nr">' . htmlentities($nr) . '</span>' : '';
+			echo $nr? '<span class="wisy_nr"> ' . htmlentities($nr) . '</span>' : '';
 		}
 		
 		// BEMERKUNGEN
