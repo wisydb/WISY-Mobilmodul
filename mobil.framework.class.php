@@ -9,7 +9,7 @@ loadWisyClass('WISY_FRAMEWORK_CLASS');
 // aufzurufen!
 class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 {
-	
+
 	function __construct($baseObject, $addParam)
 	{
 		
@@ -71,7 +71,23 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $showMobile;
 		if(!$showMobile) return parent::getPrologue($param);
 		
-		global $wisyPortalEinstellungen;
+		// Einstellungen für Spalten anhand mobil.spalten überschreiben, falls gesetzt
+		$mobilspalten = $this->iniRead('mobil.spalten');
+
+		if(trim($mobilspalten) != '') {
+			$GLOBALS['wisyPortalSpalten'] = 0;
+			$mobilspalten = str_replace(' ', '', $mobilspalten) . ',';
+			if( strpos($mobilspalten, 'anbieter,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 1;
+			if( strpos($mobilspalten, 'termin,'				)!==false ) $GLOBALS['wisyPortalSpalten'] += 2;
+			if( strpos($mobilspalten, 'dauer,'				)!==false ) $GLOBALS['wisyPortalSpalten'] += 4;
+			if( strpos($mobilspalten, 'art,'				)!==false ) $GLOBALS['wisyPortalSpalten'] += 8;
+			if( strpos($mobilspalten, 'preis,'				)!==false ) $GLOBALS['wisyPortalSpalten'] += 16;
+			if( strpos($mobilspalten, 'ort,'				)!==false ) $GLOBALS['wisyPortalSpalten'] += 32;
+			if( strpos($mobilspalten, 'kursnummer,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 64;
+			if( strpos($mobilspalten, 'bunummer,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 128;
+			if( strpos($mobilspalten, 'bildungsgutschein,'	)!==false ) $GLOBALS['wisyPortalSpalten'] += 256;
+			if( strpos($mobilspalten, 'foerderung,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 512;
+		}
 		
 		// HTML-Template aus Datei einlesen
 		$mobil_html_file = trim($this->iniRead('mobil.dateien.html'));

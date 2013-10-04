@@ -110,16 +110,15 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			}
 				
 			// Sortieroptionen
-			$order_options = array(
-				'b' => 'Termin',
-				't' => 'Angebot',
-				'a' => 'Anbieter',
-				'd' => 'Dauer',
-				'p' => 'Preis',
-				'o' => 'Ort'
-			);
+			$order_options = array();
+			if(($wisyPortalSpalten & 2)  > 0) $order_options['b'] = 'Termin';
+			$order_options['t'] = 'Angebot';
+			$order_options['a'] = 'Anbieter';
+			if(($wisyPortalSpalten & 4)  > 0) $order_options['d'] = 'Dauer';
+			if(($wisyPortalSpalten & 16) > 0) $order_options['p'] = 'Preis';
+			if(($wisyPortalSpalten & 32) > 0) $order_options['o'] = 'Ort';
 			// TODO: if($this->hasDistanceColumn) $order_options['e'] = 'Entfernung';
-			
+
 			$current_order = $this->framework->getParam('order', '');
 
 			$current_orderby = 'b';
