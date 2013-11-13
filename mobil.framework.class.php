@@ -139,8 +139,8 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		$mobil_html = str_replace('__BODYCLASSES__', $this->getBodyClasses($param['bodyClass']), $mobil_html);
 		
 		// Link "Zurück zur Desktopversion" einblenden.
-		if($_COOKIE['immermobil']) {
-			$mobil_html = str_replace('__HEADERCONTENT__', '<a href="/?nomobile=1" style="text-decoration: none; font-weight:bold;" class="zurdesktopversion">'.$this->iniRead('mobil.html.desktoplink.text').'</a>__HEADERCONTENT__', $mobil_html);
+		if(isset($_GET['immermobil']) || $_COOKIE['immermobil']) {
+			$mobil_html = str_replace('__HEADERCONTENT__', '<a href="/?nomobile=1" class="zurdesktopversion">'.$this->iniRead('mobil.html.desktoplink.text').'</a>__HEADERCONTENT__', $mobil_html);
 		}
 
 		// HEADERCONTENT
