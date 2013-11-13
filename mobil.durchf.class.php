@@ -200,7 +200,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			$preisAttr = ($details && $record['preishinweise']!='')? ' align=\"right\"' : ' nowrap="nowrap"';
 			$temp = $this->formatPreis($record['preis'], $record['sonderpreis'], $record['sonderpreistage'], $record['beginn'], $details? stripslashes($record['preishinweise']) : '');
 			echo $details ? '<br />' : '';
-			echo '<span class="wisy_preis"> ' . $this->shy($temp) . '</span>';
+			if($temp != '') echo '<span class="wisy_preis"> ' . $this->shy($temp) . '</span>';
 		}
 		
 		// NR
