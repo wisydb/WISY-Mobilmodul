@@ -81,12 +81,25 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			$db = new DB_Admin();
 			
 			// create get prev / next URLs
-			$prevurl = $offset==0? '' : $this->framework->getUrl('search', array('q'=>$queryString, 'offset'=>$offset-$this->rows));
-			$nexturl = ($offset+$this->rows<$sqlCount)? $this->framework->getUrl('search', array('q'=>$queryString, 'offset'=>$offset+$this->rows)) : '';
+			$param = array('q'=>$queryString);
+			if( $orderBy != 'b' ) $param['order'] = $orderBy;
+			
+			$prevurl = '';
+			if( $offset > 0 )
+			{
+				$param['offset'] = $offset - $this->rows;
+				$prevurl = $this->framework->getUrl('search', $param);
+			}
+			
+			$nexturl = '';
+			if( $offset + $this->rows < $sqlCount )
+			{
+				$param['offset'] = $offset + $this->rows;
+				$nexturl = $this->framework->getUrl('search', $param);
+			}
+			
 			if( $prevurl || $nexturl )
 			{	
-				$param = array('q'=>$queryString);
-				if( $orderBy != 'b' ) $param['order'] = $orderBy;
 				$param['offset'] = '';
 				$pagesel = $this->pageSel($this->framework->getUrl('search', $param), $this->rows, $offset, $sqlCount);
 			}
@@ -94,7 +107,6 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			{
 				$pagesel = '';
 			}
-
 			// render head
 			echo '<div class="wisy_suchergebnisse">';
 				if( $queryString == '' )
