@@ -58,6 +58,12 @@ header .claim { display: block; margin-top: 0.5em; }
         float: none;
 }
 
+.zurdesktopversion {
+	color: #000;
+	text-decoration: underline;
+	border: none;
+	margin-bottom: 1em;
+}
 /* Navigationen ----------------------------------------------------------- */
 
 /* Hauptnav nur auf Startseite zeigen: */

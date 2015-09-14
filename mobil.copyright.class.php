@@ -21,7 +21,7 @@ class MOBIL_COPYRIGHT_CLASS extends WISY_COPYRIGHT_CLASS
 		
 		// Nicht mobil? Dann Funktion der Elternklasse aufrufen:
 		global $showMobile;
-		if(!$showMobile) return parent::renderCopyright(&$db, $table, $recordId);
+		if(!$showMobile) return parent::renderCopyright($db, $table, $recordId);
 		
 		$copyright = '';
 	
