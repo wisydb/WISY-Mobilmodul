@@ -63,7 +63,7 @@ class MOBIL_AUTH_CLASS
 					<body>
 						<form action="" method="post">
 							<?php echo($formtext); ?><br />
-							Benutzername: <input name="wisyauth1" type="text" value="<?php echo htmlspecialchars(stripslashes($_REQUEST['wisyauth1'])) ?>" /><br />
+							Benutzername: <input name="wisyauth1" type="text" value="<?php echo isohtmlspecialchars(stripslashes($_REQUEST['wisyauth1'])) ?>" /><br />
 							Passwort: <input name="wisyauth2" type="password" value="" /><br />
 							<input type="submit" value=" OK " />
 						</form>

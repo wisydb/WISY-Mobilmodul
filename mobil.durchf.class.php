@@ -116,17 +116,17 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			
 			if( $ort && $stadtteil ) {
 				if( strpos($ort, $stadtteil)===false ) {
-					$ort = '<strong>'. htmlentities($ort) . '</strong>-' . htmlentities($stadtteil);
+					$ort = '<strong>'. isohtmlentities($ort) . '</strong>-' . isohtmlentities($stadtteil);
 				}
 				else {
-					$ort = '<strong>'. htmlentities($ort) .'</strong>';
+					$ort = '<strong>'. isohtmlentities($ort) .'</strong>';
 				}
 			}
 			else if( $ort ) {
-				$ort = '<strong>'. htmlentities($ort) .'</strong>';
+				$ort = '<strong>'. isohtmlentities($ort) .'</strong>';
 			}
 			else if( $stadtteil ) {
-				$ort = htmlentities($stadtteil);
+				$ort = isohtmlentities($stadtteil);
 				$stadt = $stadtteil;
 			}
 			if($strasse) {
@@ -153,7 +153,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 				}
 
 
-				$this->framework->map->AddPoint(htmlspecialchars($strasse), htmlspecialchars($plz), htmlspecialchars($stadt), htmlspecialchars($land),
+				$this->framework->map->AddPoint(isohtmlspecialchars($strasse), isohtmlspecialchars($plz), isohtmlspecialchars($stadt), isohtmlspecialchars($land),
 					$termin);
 			}
 			// In Kursdetails ORT erst nach KURSTAGE und DAUER ausgeben
@@ -207,7 +207,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 		if (($wisyPortalSpalten & 64) > 0)
 		{
 			$nr = stripslashes($record['nr']);
-			echo $nr? '<span class="wisy_nr"> ' . htmlentities($nr) . '</span>' : '';
+			echo $nr? '<span class="wisy_nr"> ' . isohtmlentities($nr) . '</span>' : '';
 		}
 		
 		// BEMERKUNGEN
@@ -265,7 +265,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 		if( $preishinweise )
 		{
 			if( $html ) {
-				$ret .= ' <span class="wisy_preishinweise">' . htmlentities($preishinweise) . '</span>';
+				$ret .= ' <span class="wisy_preishinweise">' . isohtmlentities($preishinweise) . '</span>';
 			}
 			else {
 				$ret .= " ($preishinweise)";

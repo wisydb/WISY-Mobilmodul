@@ -71,7 +71,7 @@ class MOBIL_ANBIETER_RENDERER_CLASS extends WISY_ANBIETER_RENDERER_CLASS
 		// prepare contact link
 		if( $anspr_email )
 		{
-			$anspr_mail_link = "<a href=\"" . $this->createMailtoLink($anspr_email) . "\"><i>" .htmlentities($anspr_email). '</i></a>';
+			$anspr_mail_link = "<a href=\"" . $this->createMailtoLink($anspr_email) . "\"><i>" .isohtmlentities($anspr_email). '</i></a>';
 		}		
 		
 		flush();
@@ -90,7 +90,7 @@ class MOBIL_ANBIETER_RENDERER_CLASS extends WISY_ANBIETER_RENDERER_CLASS
 		
 		echo '<div id="wisy_anbietersummary">';
 
-			echo '<h1>' . htmlentities($suchname) . '</h1>';
+			echo '<h1>' . isohtmlentities($suchname) . '</h1>';
 			
 			if( $firmenportraet != '' ) 
 			{
@@ -139,36 +139,36 @@ class MOBIL_ANBIETER_RENDERER_CLASS extends WISY_ANBIETER_RENDERER_CLASS
 		
 		// do what to do ...
 		$ret  = '';
-		$ret .= '<h3>'. htmlentities($postname? $postname : $suchname) . '</h3>';
+		$ret .= '<h3>'. isohtmlentities($postname? $postname : $suchname) . '</h3>';
 
 		if( $strasse )
-			$ret .= htmlentities($strasse);
+			$ret .= isohtmlentities($strasse);
 
 		if( $plz || $ort )
-			$ret .= '<br />' . htmlentities($plz) . ' ' . htmlentities($ort);
+			$ret .= '<br />' . isohtmlentities($plz) . ' ' . isohtmlentities($ort);
 
 		if( $stadtteil ) {
 			$ret .= ($plz||$ort)? '-' : '<br />';
-			$ret .= htmlentities($stadtteil);
+			$ret .= isohtmlentities($stadtteil);
 		}
 
 		if( $land ) {
 			$ret .= ($plz||$ort||$stadtteil)? ', ' : '<br />';
-			$ret .= htmlentities($land);
+			$ret .= isohtmlentities($land);
 		}
 
 		if( $anspr_tel )
-			$ret .= '<br />Tel:&nbsp;'.htmlentities($anspr_tel);
+			$ret .= '<br />Tel:&nbsp;'.isohtmlentities($anspr_tel);
 
 		if( $anspr_name || $anspr_zeit )
 		{
 			$ret .= '<br /><small>';
 				if( $anspr_name )
-					$ret .= 'Kontakt: ' . htmlentities($anspr_name);
+					$ret .= 'Kontakt: ' . isohtmlentities($anspr_name);
 				if( $anspr_zeit )
 				{
 					$ret .= $anspr_name? ', ' : '';
-					$ret .= htmlentities($anspr_zeit);
+					$ret .= isohtmlentities($anspr_zeit);
 				}
 			$ret .= '</small>';
 		}
@@ -204,7 +204,7 @@ class MOBIL_ANBIETER_RENDERER_CLASS extends WISY_ANBIETER_RENDERER_CLASS
 			$fon = str_replace(' ', '-', $fon); // Leerzeichen in - umwandeln
 			$count = 1;
 			while($count) $fon = str_replace('--', '-', $fon, $count); // Doppelte -- entfernen
-			$ret .= '<a class="wisy_call" title="Anbieter anrufen" href="tel:'. htmlentities($fon) .'">fon</a>';
+			$ret .= '<a class="wisy_call" title="Anbieter anrufen" href="tel:'. isohtmlentities($fon) .'">fon</a>';
 		}
 		
 		// Homepage

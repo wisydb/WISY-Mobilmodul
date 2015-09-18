@@ -57,7 +57,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			echo '<div class="wisy_suggestions">';
 				if( $info['changed_query'] )
 				{
-					echo '<b>Hinweis:</b> Der Suchauftrag wurde abgeändert in <i><a href="'.$this->framework->getUrl('search', array('q'=>$info['changed_query'])).'">'.htmlspecialchars($info['changed_query']).'</a></i>';
+					echo '<b>Hinweis:</b> Der Suchauftrag wurde abgeändert in <i><a href="'.$this->framework->getUrl('search', array('q'=>$info['changed_query'])).'">'.isohtmlspecialchars($info['changed_query']).'</a></i>';
 					if( sizeof($info['suggestions']) ) 
 						echo ' &ndash; ';
 				}
@@ -113,7 +113,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 					echo '<b>Aktuelle Angebote:</b>';
 				else
 					echo $sqlCount==1? "<b>1 Angebot</b> zum Suchauftrag" : "<b>$sqlCount Angebote</b> zum Suchauftrag";
-					if( $queryString ) echo ' <span class="wisy_suchbegriff">' . htmlspecialchars(trim($queryString, ', ')) . '</span>';
+					if( $queryString ) echo ' <span class="wisy_suchbegriff">' . isohtmlspecialchars(trim($queryString, ', ')) . '</span>';
 				
 			if( $info['lat'] && $info['lng'] ) {
 				$this->hasDistanceColumn = true;
@@ -184,7 +184,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			{
 				$temp = trim($queryString, ', ');
 				echo '<p class="wisy_topnote">';
-					echo 'Keine aktuellen Datensätze für <em>&quot;'  . htmlspecialchars($temp) . '&quot;</em> gefunden.<br /><br />';
+					echo 'Keine aktuellen Datensätze für <em>&quot;'  . isohtmlspecialchars($temp) . '&quot;</em> gefunden.<br /><br />';
 					echo '<a href="' . $this->framework->getUrl('search', array('q'=>"$temp, Datum:Alles")) . '">Suche wiederholen und dabei <b>auch abgelaufene Kurse berücksichtigen</b> ...</a>';
 				echo "</p>\n";
 			}
@@ -338,7 +338,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			if( $currKursFreigeschaltet == 2 ) { echo '<em>Gesperrt:</em><br />'; }
 			if( $currKursFreigeschaltet == 3 ) { echo '<em>Abgelaufen:</em><br />'; }
 							
-			echo htmlspecialchars(stripslashes($record['titel']));
+			echo isohtmlspecialchars(stripslashes($record['titel']));
 						
 			echo '</span>' . "\n";
 
@@ -424,7 +424,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			// render head
 			echo '<p class="wisy_suchergebnisse">';
 				echo "<b>$sqlCount Anbieter</b> zum Suchauftrag";
-				if( $queryString ) echo ' <span class="wisy_suchbegriff">' . htmlspecialchars(trim($queryString, ', ')) . '</span>';		
+				if( $queryString ) echo ' <span class="wisy_suchbegriff">' . isohtmlspecialchars(trim($queryString, ', ')) . '</span>';		
 			echo '</p>' . "\n";
 			flush();
 
@@ -443,9 +443,9 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 					echo $record['suchname'];
 					echo '</span>';
 					echo '<span class="wisy_anschrift">';
-					echo htmlspecialchars(stripslashes($record['strasse'])) .', ';
-					echo htmlspecialchars(stripslashes($record['plz'])) .' ';
-					echo htmlspecialchars(stripslashes($record['ort']));
+					echo isohtmlspecialchars(stripslashes($record['strasse'])) .', ';
+					echo isohtmlspecialchars(stripslashes($record['plz'])) .' ';
+					echo isohtmlspecialchars(stripslashes($record['ort']));
 					echo '</span>';
 					echo '</a>';
 					if($record['anspr_tel'] != '') {
@@ -453,7 +453,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 						$fon = str_replace(' ', '-', $fon); // Leerzeichen in - umwandeln
 						$count = 1;
 						while($count) $fon = str_replace('--', '-', $fon, $count); // Doppelte -- entfernen
-						echo '<a class="wisy_call" title="Anbieter anrufen: '. $fon . '" href="tel:'. htmlentities($fon) .'">'. $fon .'</a>';
+						echo '<a class="wisy_call" title="Anbieter anrufen: '. $fon . '" href="tel:'. isohtmlentities($fon) .'">'. $fon .'</a>';
 					}
 				echo '</li>' . "\n";
 			}
@@ -471,7 +471,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		}
 		else /* if( sqlCount ) */
 		{
-			echo '<p class="wisy_topnote">Keine Datensätze für <em>&quot;'.htmlspecialchars(trim($queryString, ', ')).'&quot;</em> gefunden.</p>' . "\n";
+			echo '<p class="wisy_topnote">Keine Datensätze für <em>&quot;'.isohtmlspecialchars(trim($queryString, ', ')).'&quot;</em> gefunden.</p>' . "\n";
 		}
 	}
 	
@@ -493,7 +493,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		if( $anbieterName )
 		{
 			$aparam = array('id'=>$currAnbieterId, 'q'=>$param['q']);			
-			echo htmlspecialchars($anbieterName);
+			echo isohtmlspecialchars($anbieterName);
 					
 		}
 		

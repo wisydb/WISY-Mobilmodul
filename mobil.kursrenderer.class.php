@@ -61,14 +61,14 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 			
 		
 		echo '<div id="wisy_resultsummary"'. $favclass .'>';
-		echo '<h1>' . htmlentities($title) . '</h1>';
+		echo '<h1>' . isohtmlentities($title) . '</h1>';
 		
 		// load anbieter
 		$db->query("SELECT * FROM anbieter WHERE id=$anbieterId");
 		if( $db->next_record() && $db->f('freigeschaltet') ==1 ) {
 			$postname = $db->fs('postname');
 			$suchname = $db->fs('suchname');
-			echo '<h2>' . htmlentities($postname? $postname : $suchname) . '</h2>';
+			echo '<h2>' . isohtmlentities($postname? $postname : $suchname) . '</h2>';
 		}
 		echo '</div>';
 		
