@@ -130,7 +130,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 				$stadt = $stadtteil;
 			}
 			if($strasse) {
-				$strasse_html = '<span class="wisy_strasse">' . $strasse . '</span>';
+				$strasse_html = '<span class="wisy_strasse">' . $strasse . '</span><br><a href="https://www.google.de/maps?q='.urlencode(str_replace("<br>", " ", utf8_encode($strasse.", ".strip_tags($ort)))).'" target="_blank">In Google Maps anzeigen &rarr;</a>';
 			}
 			
 			if( is_object($this->framework->map) )
