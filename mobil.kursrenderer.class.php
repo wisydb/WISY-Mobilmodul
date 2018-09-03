@@ -87,8 +87,8 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 		$tabinhalte = trim($this->framework->iniRead('mobil.kursdetails.tabs.inhalt'));
 		
 		// Standardeinstellungen für TABs
-		if($tabtitel == '') $tabtitel = 'Was, Wann Wo, Karte, Kontakt';
-		if($tabinhalte == '') $tabinhalte = 'info, termine, karte, kontakt';
+		if($tabtitel == '') $tabtitel = 'Was, Wann Wo, Kontakt'; // Karte, 
+		if($tabinhalte == '') $tabinhalte = 'info, termine, kontakt'; // karte, 
 
 		$tabtitel = explode(',', $tabtitel);
 		$tabinhalte = explode(',', $tabinhalte);
