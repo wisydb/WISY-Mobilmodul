@@ -641,3 +641,13 @@ body.wisyp_kurs .fav_item { background-color: #eee; }
 	background-color: #fff; 
 }
 #wisy_copyright_footer a[href^='javascript'] { display: none; }
+
+/* Bei Umkreissuche nicht die Adresse der erste DF angeben, kann verwirren! */
+body.wisyq_umkreis .wisy_ort {
+	display: none;
+}
+
+/* Entspr. beim Termin Hinweis, dass nur Beispiel */
+body.wisyq_umkreis .wisy_beginn:before {
+   	content: "Ab ";
+}
