@@ -254,7 +254,7 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 					$radius_lat = $radius_meters / 111320.0; // Abstand zwischen zwei Breitengraden: 111,32 km  (weltweit)
 					$radius_lng = $radius_meters /  71460.0; // Abstand zwischen zwei Längengraden :  71,46 km  (im mittel in Deutschland)
 							
-					list($lat, $lng) = explode('/', $value);
+					list($lng, $lat) = explode('/', $value);
 							
 					$min_lat = intval( ($lat - $radius_lat)*1000000 );
 					$max_lat = intval( ($lat + $radius_lat)*1000000 );
