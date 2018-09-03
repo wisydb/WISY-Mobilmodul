@@ -358,7 +358,7 @@ body.wisyp_kurs .fav_item { background-color: #eee; }
 
 #wisy_resulttabs { background-color: #fff; }
 
-#wisy_resulttabs li { display: block; float: left; width: 25%; }
+#wisy_resulttabs li { display: block; float: left; width: 33.3%; } // Bei 3 Tabs: 33.3%, bei 4 Tabs (Karte) 25%
 #wisy_resulttabs.tabcount3 li { width: 33%; }
 #wisy_resulttabs.tabcount2 li { width: 50%; }
 #wisy_resulttabs.tabcount1 li { width: 100%; }
