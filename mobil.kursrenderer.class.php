@@ -183,7 +183,7 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 			{
 
 				// Durchfuehrungen vorbereiten
-				$showAllDurchf = 1; // Immer alle Durchführungen zeigen
+				$showAllDurchf = 0; // Keine abgelaufenen DF anzeigen
 			
 				$durchfClass =& createWisyObject('WISY_DURCHF_CLASS', $this->framework);
 				$durchfuehrungenIds = $durchfClass->getDurchfuehrungIds($db, $kursId, $showAllDurchf);
