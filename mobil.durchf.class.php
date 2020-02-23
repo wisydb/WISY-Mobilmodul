@@ -8,7 +8,7 @@ loadWisyClass('WISY_DURCHF_CLASS');
 class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 {
 
-	function formatDurchfuehrung(&$db, $kursId, $durchfuehrungId, $details = 0, $anbieterId = 0, $showAllDurchf = 1, $addText='')
+    function formatDurchfuehrung(&$db, $kursId, $durchfuehrungId, $details = 0, $anbieterId = 0, $showAllDurchf = 1, $addText='', $addParam = 0)
 	{
 		
 		// Nicht mobil? Dann Funktion der Elternklasse aufrufen:
