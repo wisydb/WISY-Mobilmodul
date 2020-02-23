@@ -3,12 +3,12 @@
 /******************************************************************************
  WISY 2.0
  ******************************************************************************
- Einfacher Passwortschutz für ein Portal, z.B. für Testzwecke.
+ Einfacher Passwortschutz fÃ¼r ein Portal, z.B. fÃ¼r Testzwecke.
  
  Achtung: Geringe Sicherheit!
  
  Das Passwort wird im Klartext in der Datenbank gespeichert und im Cookie
- nur durch ein einfaches md5() ohne salt etc. geschützt!
+ nur durch ein einfaches md5() ohne salt etc. geschÃ¼tzt!
  ******************************************************************************/
 
 

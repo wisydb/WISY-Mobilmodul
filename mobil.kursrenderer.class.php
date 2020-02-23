@@ -104,7 +104,7 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 		
 		// Tabs ausgeben anhand Portaleinstellungen oder Standardeinstellungen
 		// Anzahl der Tabs als Klasse damit per CSS die Tabbreite auf 1/4, 1/3 usw. eingestellt werden kann
-		echo '<nav id="wisy_resulttabs" class="clearfix tabcount'. count($tabs) .'"><ul>';
+		echo '<nav id="wisy_resulttabs" class="clearfix tabcount'. count((array) $tabs) .'"><ul>';
 		$firstTab = true;
 		$activeSection = '';
 		foreach($tabs as $tab) {
@@ -144,7 +144,7 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 			
 				// ... Stichwoerter
 				$stichwoerter = $this->framework->loadStichwoerter($db, 'kurse', $kursId);
-				if( sizeof($stichwoerter) )
+				if( sizeof((array) $stichwoerter) )
 				{
 					$list .= $this->framework->writeStichwoerter($db, 'kurse', $stichwoerter);
 				}
@@ -188,14 +188,14 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 				$durchfClass =& createWisyObject('WISY_DURCHF_CLASS', $this->framework);
 				$durchfuehrungenIds = $durchfClass->getDurchfuehrungIds($db, $kursId, $showAllDurchf);
 				echo '<p class="wisy_anzahltermine">';
-				if( sizeof($durchfuehrungenIds)==0 ) {
+				if( sizeof((array) $durchfuehrungenIds)==0 ) {
 					echo $this->framework->iniRead('durchf.msg.keinedf', 'Keine Durchf&uuml;hrungen bekannt.');
 				}
-				else if( sizeof($durchfuehrungenIds) == 1 ) {
+				else if( sizeof((array) $durchfuehrungenIds) == 1 ) {
 					echo '1 Durchf&uuml;hrung:';
 				}
 				else {
-					echo  sizeof($durchfuehrungenIds). ' Durchf&uuml;hrungen:';
+				    echo  sizeof((array) $durchfuehrungenIds). ' Durchf&uuml;hrungen:';
 				}
 				echo '</p>';
 		
@@ -203,7 +203,7 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 				$this->framework->map =& createWisyObject('WISY_GOOGLEMAPS_CLASS', $this->framework);
 		
 				// Durchfuehrungen ausgeben
-				if( sizeof($durchfuehrungenIds) )
+				if( sizeof((array) $durchfuehrungenIds) )
 				{
 										
 					$maxDurchf = intval($this->framework->iniRead('details.durchf.max'));
@@ -212,7 +212,7 @@ class MOBIL_KURS_RENDERER_CLASS extends WISY_KURS_RENDERER_CLASS
 				
 					$anzDurchf = 0;
 					$moreLink = '';
-					for( $d = 0; $d < sizeof($durchfuehrungenIds); $d++ )
+					for( $d = 0; $d < sizeof((array) $durchfuehrungenIds); $d++ )
 					{
 						$class = ($d%2)==1? ' wisy_even' : '';
 						echo '<div class="wisy_durchfuehrung'. $class .'">';

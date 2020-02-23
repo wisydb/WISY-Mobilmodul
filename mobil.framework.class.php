@@ -16,7 +16,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $showMobile;
 		$showMobile = false;
 		
-		// Zuerst überprüfen, ob MOBILausgabe erwünscht ist
+		// Zuerst ï¿½berprï¿½fen, ob MOBILausgabe erwï¿½nscht ist
 		if($this->iniRead('mobil.aktiv') && ($this->iniRead('mobil.immermobil') == 1 || $this->isMobile()) || (isset($_COOKIE['immermobil']) && $_COOKIE['immermobil'] == true)) {
 			$showMobile = true;
 		}
@@ -24,7 +24,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		// Link geklickt: Umschalten auf Mobilversion 
 		if(isset($_GET['immermobil'])) {
 			if(!$_COOKIE['immermobil']) {
-				setcookie('immermobil', true, time()+86400);	// bleibt 24h in Mobilmodus, wenn nicht "zurück zu Desktopversion" geklickt
+				setcookie('immermobil', true, time()+86400);	// bleibt 24h in Mobilmodus, wenn nicht "zurï¿½ck zu Desktopversion" geklickt
 			}
 			$showMobile = true;
 		}
@@ -51,8 +51,8 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 	
 	function getTitleString($pageTitleNoHtml)
 	{
-		// Nicht mobil? Trotzdem Sonderbehandlung für Favprint-Seitenaufrufe:
-		// Sonderfall Favprint: Unschöner Seitentitel bei Aufruf der vom Mobiltelefon verschickten Kurslisten-URL etwas schöner durch Kürzung
+		// Nicht mobil? Trotzdem Sonderbehandlung fï¿½r Favprint-Seitenaufrufe:
+		// Sonderfall Favprint: Unschï¿½ner Seitentitel bei Aufruf der vom Mobiltelefon verschickten Kurslisten-URL etwas schï¿½ner durch Kï¿½rzung
 		// get the title as a no-html-string
 		global $wisyPortalKurzname;
 		if(strpos($pageTitleNoHtml, 'Favprint:') === false) {
@@ -71,7 +71,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $showMobile;
 		if(!$showMobile) return parent::getPrologue($param);
 		
-		// Einstellungen für Spalten anhand mobil.spalten überschreiben, falls gesetzt
+		// Einstellungen fï¿½r Spalten anhand mobil.spalten ï¿½berschreiben, falls gesetzt
 		$mobilspalten = $this->iniRead('mobil.spalten');
 
 		if(trim($mobilspalten) != '') {
@@ -138,7 +138,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		// Embed __BODYCLASSES__ -> Body Klassen
 		$mobil_html = str_replace('__BODYCLASSES__', $this->getBodyClasses($param['bodyClass']), $mobil_html);
 		
-		// Link "Zurück zur Desktopversion" einblenden.
+		// Link "Zurï¿½ck zur Desktopversion" einblenden.
 		if(isset($_GET['immermobil']) || $_COOKIE['immermobil']) {
 			$mobil_html = str_replace('__HEADERCONTENT__', '<a href="/?nomobile=1" class="zurdesktopversion">'.$this->iniRead('mobil.html.desktoplink.text').'</a>__HEADERCONTENT__', $mobil_html);
 		}
@@ -155,10 +155,10 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		$mobilheadercontent = ($mobilheadercontent_custom=="" ? $mobilheadercontent_default : $mobilheadercontent_custom);
 		$mobil_html = str_replace('__HEADERCONTENT__', $mobilheadercontent, $mobil_html);
 
-		// Kasten/Kästen unterm Kopfbereich
+		// Kasten/Kï¿½sten unterm Kopfbereich
 		$mobil_html = str_replace('__SUBHEADER__', $this->getsubheadercontent("presearch"), $mobil_html);
 
-		// Fußbereich Platzhalter ersetzen (__FOOTERLOGO__ und __COPYRIGHT__)
+		// Fuï¿½bereich Platzhalter ersetzen (__FOOTERLOGO__ und __COPYRIGHT__)
 		$mobil_html = str_replace('__FOOTERLOGO__', $this->iniRead('mobil.footer.logo'), $mobil_html);
 		
 		// Anhand der Anfrageart entscheiden, welcher Copyright-Hinweis ausgegeben werden soll
@@ -257,7 +257,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 			echo 'http://' . $_SERVER['HTTP_HOST'];
 			echo '/search?q=Favprint:"';
 			echo ' title="Favoritenliste per Mail senden">Favoriten per Mail senden</a>';
-			echo '<a id="fav_delete_all" href="javascript:fav_delete_all()" title="Alle Favoriten löschen">&times;</a>';
+			echo '<a id="fav_delete_all" href="javascript:fav_delete_all()" title="Alle Favoriten lï¿½schen">&times;</a>';
 			echo '</div>';
 		}
 
@@ -306,7 +306,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 
 
 	
-	function writeStichwoerter($db, $table, $stichwoerter)
+	function writeStichwoerter($db, $table, $stichwoerter, $richtext = false)
 	{
 		
 		// Nicht mobil? Dann Funktion der Elternklasse aufrufen:
@@ -322,7 +322,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		$codes_array = explode('###', $codes_stichwort_eigenschaften);
 		
 		// go through codes and stichwoerter
-		for( $c = 0; $c < sizeof($codes_array); $c += 2 ) 
+		for( $c = 0; $c < sizeof((array) $codes_array); $c += 2 ) 
 		{
 			if( $codes_array[$c] == 0 )
 				continue; // sachstichwoerter nicht darstellen - aenderung vom 30.03.2010 (bp)
@@ -332,7 +332,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 				
 			$anythingOfThisCode = 0;
 			
-			for( $s = 0; $s < sizeof($stichwoerter); $s++ )
+			for( $s = 0; $s < sizeof((array) $stichwoerter); $s++ )
 			{
 				$glossarLink = '';
 				$glossarId = $this->glossarDb($db, 'stichwoerter', $stichwoerter[$s]['id']);
@@ -384,8 +384,8 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $wisyPortalEinstellungen;
 		$value = $default;
 		
-		// Erst überprüfen, ob Wert im mobil-Namespace gesetzt ist, 
-		//	ansonsten reguläre Ausgabe des Wertes
+		// Erst ï¿½berprï¿½fen, ob Wert im mobil-Namespace gesetzt ist, 
+		//	ansonsten regulï¿½re Ausgabe des Wertes
 		
 		$mobilkey = 'mobil.' . $key;
 		
@@ -410,8 +410,8 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $wisyPortalEinstcache;
 		$value = $default;
 		
-		// Erst überprüfen, ob Wert im mobil-Namespace gesetzt ist, 
-		//	ansonsten reguläre Ausgabe des Wertes
+		// Erst ï¿½berprï¿½fen, ob Wert im mobil-Namespace gesetzt ist, 
+		//	ansonsten regulï¿½re Ausgabe des Wertes
 		
 		$mobilkey = 'mobil.' . $key;
 		

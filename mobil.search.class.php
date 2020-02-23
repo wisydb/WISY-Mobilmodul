@@ -35,7 +35,7 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 		$max_km = 500;
 		$default_km = $this->framework->iniRead('radiussearch.defaultkm', 2);
 		$km = floatval($default_km);
-		for( $i = 0; $i < sizeof($this->tokens['cond']); $i++ )
+		for( $i = 0; $i < sizeof((array) $this->tokens['cond']); $i++ )
 		{
 			$value = $this->tokens['cond'][$i]['value'];
 			switch( $this->tokens['cond'][$i]['field'] )
@@ -58,7 +58,7 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 				
 		// pass 2: create SQL
 		$abgelaufeneKurseAnzeigen = 'no';
-		for( $i = 0; $i < sizeof($this->tokens['cond']); $i++ )
+		for( $i = 0; $i < sizeof((array) $this->tokens['cond']); $i++ )
 		{
 			// build SQL statements for this part
 			$value = $this->tokens['cond'][$i]['value'];
@@ -71,7 +71,7 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 						// ODER-Suche
 						$subval = explode(' ODER ', $value);
 						$rawOr = '';
-						for( $s = 0; $s < sizeof($subval); $s++ )
+						for( $s = 0; $s < sizeof((array) $subval); $s++ )
 						{	
 							$tag_id = $this->lookupTag(trim($subval[$s]));
 							if( $tag_id == 0 )
@@ -166,12 +166,12 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 					// safely get the IDs - do not use the Cookie-String directly!
 					$fav_ids = array();
 					$temp = explode(',',$_COOKIE['fav']);
-					for( $j = 0; $j < sizeof($temp); $j++ ) 
+					for( $j = 0; $j < sizeof((array) $temp); $j++ ) 
 						$fav_ids[] = intval($temp[$j]);
 					
 					$this->rawCanCache = false;
 					$this->rawWhere .= $this->rawWhere? ' AND ' : ' WHERE ';
-					if( sizeof($fav_ids) >= 1 ) {
+					if( sizeof((array) $fav_ids) >= 1 ) {
 						$this->rawWhere .= "(x_kurse.kurs_id IN (".implode(',', $fav_ids)."))";
 						$abgelaufeneKurseAnzeigen = 'void';
 					}
@@ -186,12 +186,12 @@ class MOBIL_SEARCH_CLASS extends WISY_SEARCH_CLASS
 					// safely get the IDs - do not use the URL-String directly!
 					$favprint_ids = array();
 					$temp = explode('/',$value); // Auch hier wie in Adressen muss der Schraegstrich anstelle des Kommas verwendet werden (das Komma trennt ja schon die verschiedenen Suchkritieren)
-					for( $j = 0; $j < sizeof($temp); $j++ ) 
+					for( $j = 0; $j < sizeof((array) $temp); $j++ ) 
 						$favprint_ids[] = intval($temp[$j]);
 					
 					$this->rawCanCache = false;
 					$this->rawWhere .= $this->rawWhere? ' AND ' : ' WHERE ';
-					if( sizeof($favprint_ids) >= 1 ) {
+					if( sizeof((array) $favprint_ids) >= 1 ) {
 						$this->rawWhere .= "(x_kurse.kurs_id IN (".implode(',', $favprint_ids)."))";
 						$abgelaufeneKurseAnzeigen = 'void';
 					}

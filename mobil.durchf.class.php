@@ -221,7 +221,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 		}
 	}
 	
-	function formatPreis($preis, $sonderpreis, $sonderpreistage, $beginn, $preishinweise, $html = 1)
+	function formatPreis($preis, $sonderpreis, $sonderpreistage, $beginn, $preishinweise, $html = 1, $addParam = 0)
 	{
 		
 		// Nicht mobil? Dann Funktion der Elternklasse aufrufen:
@@ -323,7 +323,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 					global $codes_tagescode;				
 					$codes_tagescode_array = array();
 					$temp = explode('###', $codes_tagescode);
-					for( $i = 0; $i < sizeof($temp); $i+=2 ) {
+					for( $i = 0; $i < sizeof((array) $temp); $i+=2 ) {
 						$codes_tagescode_array[$temp[$i]] = $temp[$i+1];
 					}
 					$codes_tagescode_array['bu'] = 'Bildungsurlaub';
@@ -358,7 +358,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			global $codes_dauer;
 			$codes_dauer_array = array();
 			$temp = explode('###', $codes_dauer);
-			for( $i = 0; $i < sizeof($temp); $i+=2 ) {
+			for( $i = 0; $i < sizeof((array) $temp); $i+=2 ) {
 				$codes_dauer_array[$temp[$i]] = $temp[$i+1];
 			}
 		}

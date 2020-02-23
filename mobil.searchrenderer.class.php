@@ -18,12 +18,12 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		$tagsuggestor =& createWisyObject('WISY_TAGSUGGESTOR_CLASS', $this->framework);
 		$suggestions = $tagsuggestor->suggestTags($queryString);
 
-		if( sizeof($suggestions) ) 
+		if( sizeof((array) $suggestions) ) 
 		{
 			echo '<div class="wisy_suggestions">';
 			echo '<h3>Gefundene Rechercheziele - verfeinern Sie Ihren Suchauftrag:</h3>';
 			echo '<ul>';
-				for( $i = 0; $i < sizeof($suggestions); $i++ )
+			for( $i = 0; $i < sizeof((array) $suggestions); $i++ )
 				{
 					echo '<li>' . $this->formatItem($suggestions[$i]['tag'], $suggestions[$i]['tag_descr'], $suggestions[$i]['tag_type'], intval($suggestions[$i]['tag_help']), intval($suggestions[$i]['tag_freq'])) . '</li>';
 				}
@@ -52,21 +52,21 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		if( !in_array($orderBy, $validOrders) ) $orderBy = 'b';
 		
 		$info = $searcher->getInfo();
-		if( $info['changed_query'] || sizeof($info['suggestions']) )
+		if( $info['changed_query'] || sizeof((array) $info['suggestions']) )
 		{
 			echo '<div class="wisy_suggestions">';
 				if( $info['changed_query'] )
 				{
-					echo '<b>Hinweis:</b> Der Suchauftrag wurde abgeändert in <i><a href="'.$this->framework->getUrl('search', array('q'=>$info['changed_query'])).'">'.isohtmlspecialchars($info['changed_query']).'</a></i>';
-					if( sizeof($info['suggestions']) ) 
+					echo '<b>Hinweis:</b> Der Suchauftrag wurde abge&auml;ndert in <i><a href="'.$this->framework->getUrl('search', array('q'=>$info['changed_query'])).'">'.isohtmlspecialchars($info['changed_query']).'</a></i>';
+					if( sizeof((array) $info['suggestions']) ) 
 						echo ' &ndash; ';
 				}
 				
-				if( sizeof($info['suggestions']) ) 
+				if( sizeof((array) $info['suggestions']) ) 
 				{
 					echo '<h3>Gefundene Rechercheziele - verfeinern Sie Ihren Suchauftrag:</h3>';
 					echo '<ul>';
-						for( $i = 0; $i < sizeof($info['suggestions']); $i++ )
+					for( $i = 0; $i < sizeof((array) $info['suggestions']); $i++ )
 						{
 							echo '<li>' . $this->formatItem($info['suggestions'][$i]['tag'], $info['suggestions'][$i]['tag_descr'], $info['suggestions'][$i]['tag_type'], intval($info['suggestions'][$i]['tag_help']), intval($suggestions[$i]['tag_freq'])) . '</li>';
 						}
@@ -180,12 +180,12 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		}
 		else 
 		{
-			if( sizeof($info['suggestions']) == 0 )
+		    if( sizeof((array) $info['suggestions']) == 0 )
 			{
 				$temp = trim($queryString, ', ');
 				echo '<p class="wisy_topnote">';
-					echo 'Keine aktuellen Datensätze für <em>&quot;'  . isohtmlspecialchars($temp) . '&quot;</em> gefunden.<br /><br />';
-					echo '<a href="' . $this->framework->getUrl('search', array('q'=>"$temp, Datum:Alles")) . '">Suche wiederholen und dabei <b>auch abgelaufene Kurse berücksichtigen</b> ...</a>';
+					echo 'Keine aktuellen Datens&auml;tze f&uuml;r <em>&quot;'  . isohtmlspecialchars($temp) . '&quot;</em> gefunden.<br /><br />';
+					echo '<a href="' . $this->framework->getUrl('search', array('q'=>"$temp, Datum:Alles")) . '">Suche wiederholen und dabei <b>auch abgelaufene Kurse ber&uuml;cksichtigen</b> ...</a>';
 				echo "</p>\n";
 			}
 		}
@@ -380,7 +380,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 					echo $cell;
 				}
 			}
-			// Mehrtext anzeigen, falls in Portal-Einstellungen ein Text dafür eingegeben wurde
+			// Mehrtext anzeigen, falls in Portal-Einstellungen ein Text dafï¿½r eingegeben wurde
 			if( ($mehrtext = trim($this->framework->iniRead('mobil.kursliste.mehrtext'))) != '') {
 				echo '  <span class="mehrtext">'. $mehrtext .'</span></a></li>' . "\n";
 			} else {
@@ -471,7 +471,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		}
 		else /* if( sqlCount ) */
 		{
-			echo '<p class="wisy_topnote">Keine Datensätze für <em>&quot;'.isohtmlspecialchars(trim($queryString, ', ')).'&quot;</em> gefunden.</p>' . "\n";
+			echo '<p class="wisy_topnote">Keine Datensï¿½tze fï¿½r <em>&quot;'.isohtmlspecialchars(trim($queryString, ', ')).'&quot;</em> gefunden.</p>' . "\n";
 		}
 	}
 	
