@@ -250,7 +250,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		if( is_array($recordsToSkip['records']) )
 		{
 			reset($recordsToSkip['records']);
-			while( list($i, $record) = each($recordsToSkip['records']) )
+			foreach($recordsToSkip['records'] as $i => $record)
 			{
 				$recordsToSkipHash[ $record['id'] ] = true;
 			}
@@ -262,7 +262,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		{
 			$ids = '';
 			reset($records['records']);
-			while( list($i, $record) = each($records['records']) )
+			foreach($records['records'] as $i => $record)
 			{
 				$ids .= ($ids==''? '' : ', ') . $record['id'];
 			}
@@ -301,7 +301,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 		
 		$rows = 0;
 		reset($records['records']);
-		while( list($i, $record) = each($records['records']) )
+		foreach($records['records'] as $i => $record)
 		{	
 			// get kurs basics
 			$currKursId = $record['id'];
@@ -434,7 +434,7 @@ class MOBIL_SEARCH_RENDERER_CLASS extends WISY_SEARCH_RENDERER_CLASS
 			
 			echo '<ul id="anbieterliste" class="wisy_list">';
 			
-			while( list($i, $record) = each($records['records']) )
+			foreach($records['records'] as $i => $record)
 			{
 				$class = ($rows%2)==0? ' class="wisy_even"' : '';
 				echo "<li$class>\n";
