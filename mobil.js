@@ -37,13 +37,13 @@ function updateMainnav() {
 		}
 	});
 	
-	// Gekürzte Texte erst zu- dann bei Klick aufklappen
+	// Gekï¿½rzte Texte erst zu- dann bei Klick aufklappen
 	$('.automin_nojs').addClass('automin min').removeClass('automin_nojs');
 	$('.automin.min').on('click', function(evt) {
 		// Nur ausklappen, wenn Klick nicht auf einem Link im sichtbaren Inhalt war
 		if(!$(evt.target).closest('a').length) $(this).removeClass('min');
 	});
-	// Sonderfall Kontakt / Anbieter vcard: Alle folgenden Elemente im übergeordneten Container zu- / aufklappen
+	// Sonderfall Kontakt / Anbieter vcard: Alle folgenden Elemente im ï¿½bergeordneten Container zu- / aufklappen
 	$('.automin.min.hide_after').nextAll().hide();
 	$('.automin.min.hide_after').on('click', function(evt) {
 		// Nur ausklappen, wenn Klick nicht auf einem Link im sichtbaren Inhalt war
@@ -100,7 +100,7 @@ function prepareSearch() {
 	});
 	// Umkreissuche
 	$('#wisy_umkreis').on('change', function() {
-		// vorherigen umkreis:xxx/yyy und km:zzz löschen
+		// vorherigen umkreis:xxx/yyy und km:zzz lï¿½schen
 		var search_val = $('#wisy_searchinput').val();
 		var re_km = /\s*km:\d{1,2},{0,1}/gi;
 		search_val = search_val.replace(re_km, '');
@@ -117,7 +117,7 @@ function prepareSearch() {
 			}
 			var val = $('#wisy_searchinput').val().replace('Fav:,', '');
 			$('#wisy_searchinput').val(val + 'km:' + km + ', ');
-			// TODO: Feld und Buttons sperren für x Sekunden und Spinner zeigen mit Text "Ortung" oder so
+			// TODO: Feld und Buttons sperren fï¿½r x Sekunden und Spinner zeigen mit Text "Ortung" oder so
 		} else {
 			$('#wisy_searcharea form').submit();
 		}
@@ -140,7 +140,7 @@ function locationSuccess(position) {
 }
 
 function locationError(error) {
-	alert('Es konnte keine Ortung durchgeführt werden. Fehlercode: ' + error.code);
+	alert('Es konnte keine Ortung durchgefï¿½hrt werden. Fehlercode: ' + error.code);
 }
 
 
@@ -188,7 +188,7 @@ function swipe(direction) {
 		// Startseite -> Nichts tun
 		
 	} else if($body.hasClass('wisyp_search')) {
-		// Suchergebnisliste -> Paging vor zurück oder back wenn right auf Seite 1
+		// Suchergebnisliste -> Paging vor zurï¿½ck oder back wenn right auf Seite 1
 		if(direction == 'right') {
 			if($('.wisy_paginate a.prev').attr('href') != undefined) {
 				window.location = $('.wisy_paginate a.prev').attr('href');
@@ -495,7 +495,7 @@ function describeFeedback()
 	else
 	{
 		$('#wisy_feedback_line2').html('<strong style="color: green;">Vielen Dank f&uuml;r Ihren Kommentar!</strong>');
-		ajaxFeedback(0, descr); // Kommentar zur Bewertung hinzufügen; die Bewertung selbst (erster Parameter) wird an dieser Stelle ignoriert!
+		ajaxFeedback(0, descr); // Kommentar zur Bewertung hinzufï¿½gen; die Bewertung selbst (erster Parameter) wird an dieser Stelle ignoriert!
 	}
 }
 
@@ -614,6 +614,17 @@ function fav_resize() {
 
 function fav_click(jsObj, id)
 {
+	if (window.cookiebanner && window.cookiebanner.optedOut) {
+		alert(window.cookiebanner.favOptoutMessage);
+		window.cookieconsent.popup.open();
+		return false;
+	} else if($.cookie('cconsent_merkliste') != "allow") {
+		alert("Um diese Funktion nutzen zu k"+oe+"nnen, m"+ue+"ssen Sie dem Speichern von Cookies f"+ue+"r diese Funktion zustimmen (im Cookie-Hinweisfenster).");
+		hightlightCookieConsentOption('merkliste');
+		window.cookieconsent.popup.open();
+		return false;
+	}
+	
 	jqObj = $(jsObj);
 	if( jqObj.hasClass('fav_selected') ) {
 		jqObj.removeClass('fav_selected');
@@ -633,7 +644,7 @@ function fav_click(jsObj, id)
 }
 function fav_delete_all()
 {
-	if( !confirm('Alle gespeicherten Favoriten löschen?') )
+	if( !confirm('Alle gespeicherten Favoriten lï¿½schen?') )
 		return false;
 	
 	g_all_fav = {};
@@ -688,3 +699,192 @@ function fav_init()
  * @version 1.0 (15th July 2010)
  */
 (function($){$.fn.touchwipe=function(settings){var config={min_move_x:20,min_move_y:20,wipeLeft:function(){},wipeRight:function(){},wipeUp:function(){},wipeDown:function(){},preventDefaultEvents:true};if(settings)$.extend(config,settings);this.each(function(){var startX;var startY;var isMoving=false;function cancelTouch(){this.removeEventListener('touchmove',onTouchMove);startX=null;isMoving=false}function onTouchMove(e){if(config.preventDefaultEvents){e.preventDefault()}if(isMoving){var x=e.touches[0].pageX;var y=e.touches[0].pageY;var dx=startX-x;var dy=startY-y;if(Math.abs(dx)>=config.min_move_x){cancelTouch();if(dx>0){config.wipeLeft()}else{config.wipeRight()}}else if(Math.abs(dy)>=config.min_move_y){cancelTouch();if(dy>0){config.wipeDown()}else{config.wipeUp()}}}}function onTouchStart(e){if(e.touches.length==1){startX=e.touches[0].pageX;startY=e.touches[0].pageY;isMoving=true;this.addEventListener('touchmove',onTouchMove,false)}}if('ontouchstart'in document.documentElement){this.addEventListener('touchstart',onTouchStart,false)}});return this}})(jQuery);
+
+
+
+/*****************************************************************************
+ * DSGVO stuff
+ *****************************************************************************/
+
+/* Cookie optout wrapper for $.cookie function
+ *
+ * Passes cookies through to $.cookie function, but only if user has not opted out 
+ * or if cookie is not blacklisted via cookiebanner.cookies.optout
+ *
+ */
+function setCookieSafely(title, value, options) {
+	if (window.cookiebanner && window.cookiebanner.optedOut && window.cookiebanner.optoutCookies && window.cookiebanner.optoutCookies.length) {
+		var blacklist = window.cookiebanner.optoutCookies.split(',');
+		for (var i = 0; i < blacklist.length; i++) {
+			if (title === $.trim(blacklist[i])) {
+				return false;
+			}
+		}
+	}
+	$.cookie(title, value, options);
+}
+
+/* Update Cookie Settings
+ *
+ * Remove all cookies that are set as optout cookies in portal settings
+ * via cookiebanner.cookies.optout when user opts out of cookies
+ * Dis- / enable Google Analytics and PIWIK
+ */
+function updateCookieSettings() {
+	if (window.cookiebanner) {
+		if (window.cookiebanner.optedOut) {
+			
+			// Disable Google Analytics
+			// Tut das Ã¼berhaupt irgendwas? -- https://developers.google.com/analytics/devguides/collection/analyticsjs/user-opt-out
+			if(window.cookiebanner.uacct) window['ga-disable-' + window.cookiebanner.uacct] = true;
+			
+			// Remove unwanted cookies
+			if (window.cookiebanner.optoutCookies && window.cookiebanner.optoutCookies.length) {
+				
+				// Portal blacklist
+				var blacklist = window.cookiebanner.optoutCookies.split(',');
+				for (var i = 0; i < blacklist.length; i++) {
+					var cookieName = $.trim(blacklist[i]);
+					if (cookieName !== '') $.removeCookie(cookieName, { path: '/' });
+				}
+				
+				// FAV
+				$.removeCookie('fav', { path: '/' });
+				$.removeCookie('fav_init_hint', { path: '/' });
+				
+				// Piwik
+				if(window.cookiebanner.piwik) {
+					var piwikCookies = document.cookie.match(/\_pk(\_id|\_ses)\.6\..*?=/g);
+					if (piwikCookies !== null) {
+						for(var i=0; i < piwikCookies.length; i++) {
+							$.removeCookie(piwikCookies[i].replace('=', ''), { path: '/' });
+						}
+					}
+				}
+				
+				// Google Analytics
+				if (window.cookiebanner.uacct) {
+					$.removeCookie('_ga', { path: '/' }); 
+					$.removeCookie('_gat', { path: '/' });
+					$.removeCookie('_gid', { path: '/' });
+				}
+			}
+		}
+	}
+}
+
+function initializeTranslate() {
+ if($.cookie('cconsent_translate') == "allow") {
+  console.log("consented");
+  $.loadScript('//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit', function(){
+     /* console.log('Loaded Google Translate'); */
+ });
+  
+ } else {
+  /* Interaction not disirable */
+  /*
+  hightlightCookieConsentOption('translate');
+  window.cookieconsent.popup.open();
+  return false; */
+ }
+};
+
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+
+$(document).ready(function(){
+ consentCookieBeforePageFunction();
+});
+
+
+function hightlightCookieConsentOption(name) {
+ $('.cc-consent-details .'+name+' .consent_option_infos').addClass('highlight');
+}
+
+// check for consent of specific cookie, if page dependant on it being given
+function consentCookieBeforePageFunction() {
+ 
+  // Edit page
+  if($(".wisyp_edit").length) {
+ 
+   // only if no other submit event is attached to search submit button:
+   if( typeof $._data( $(".wisyp_edit form[action=edit]"), "events" ) == 'undefined' ) {
+    $('.wisyp_edit form[action=edit]').on('submit', function(e) {
+     e.preventDefault();
+     
+     if($.cookie('cconsent_onlinepflege') != "allow" && !window.cookiebanner_zustimmung_onlinepflege_legacy) {
+      alert("Um die Onlinepflege nutzen zu k"+oe+"nnen, m"+ue+"ssen Sie dem Speichern von Cookies f"+ue+"r diese Funktion zustimmen (im Cookie-Hinweisfenster).");
+      hightlightCookieConsentOption('onlinepflege');
+      window.cookieconsent.popup.open();
+      return false;
+     } else {
+	
+      // default: normal search on other than homepage
+      this.submit();
+     }
+    });
+   }
+  } // end: edit page
+}
+
+function openCookieSettings() {
+ window.cookieconsent.popup.open();
+}
+
+/* Called every time change Cookie consent window initialized or updated */
+function callCookieDependantFunctions() {
+ initializeTranslate();
+}
+
+jQuery.loadScript = function (url, callback) {
+    jQuery.ajax({
+        url: url,
+        dataType: 'script',
+        success: callback,
+        async: true
+    });
+}
+
+var ae = unescape("%E4");
+var ue = unescape("%FC");
+var oe = unescape("%F6");
+var ss = unescape("%DF");
+
+
+// ersetzt $.browser
+var matched, browser;
+
+jQuery.uaMatch = function( ua ) {
+    ua = ua.toLowerCase();
+
+    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        /(msie) ([\w.]+)/.exec( ua ) ||
+        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+        [];
+
+    return {
+        browser: match[ 1 ] || "",
+        version: match[ 2 ] || "0"
+    };
+};
+
+matched = jQuery.uaMatch( navigator.userAgent );
+browser = {};
+
+if ( matched.browser ) {
+    browser[ matched.browser ] = true;
+    browser.version = matched.version;
+}
+
+// Chrome is Webkit, but Webkit is also Safari.
+if ( browser.chrome ) {
+    browser.webkit = true;
+} else if ( browser.webkit ) {
+    browser.safari = true;
+}
+
+jQuery.browser = browser;

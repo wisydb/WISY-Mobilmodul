@@ -110,26 +110,189 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		
 		// Mobil CSS und JS
 		if( ($mobil_css_url = trim($this->iniRead('mobil.dateien.css'))) != '') {
-			$head .= '<link rel="stylesheet" href="'. $mobil_css_url .'" />' . "\n";
+		    $head .= '<link rel="stylesheet" href="'. $mobil_css_url .'" />' . "\n";
 		}
-		$head .= '<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>' . "\n";
+		
+		global $wisyCore;
+		$head .= '<link rel="stylesheet" href="'.$wisyCore.'/lib/cookieconsent/cookieconsent.min.css" />' . "\n";
+		
+		$protocol = $this->iniRead('portal.https', '') ? "https" : "http";
+		$head .= '<script src="/files/mobil/jslibs/jquery-1.9.1.min.js"></script>' . "\n";
 		if( ($mobil_jslibspath = trim($this->iniRead('mobil.dateien.jslibspath'))) != '') {
-			$head .= '<script src="'. $mobil_jslibspath .'jquery.autocomplete.min.js"></script>' . "\n";
+		    $head .= '<script src="'. $mobil_jslibspath .'jquery.autocomplete.min.js"></script>' . "\n";
 		}
 		if( ($mobil_js_url = trim($this->iniRead('mobil.dateien.js'))) != '') {
-			$head .= '<script src="'. $mobil_js_url .'"></script>' . "\n";
+		    $head .= '<script src="'. $mobil_js_url .'"></script>' . "\n";
 		}
-
+		
 		// Portal-spezifisches CSS
 		if( ($portal_css_url = trim($this->iniRead('mobil.dateien.portal_css'))) != '') {
-			$head .= '<link rel="stylesheet" href="'. $portal_css_url .'" />' . "\n";
+		    $head .= '<link rel="stylesheet" href="'. $portal_css_url .'" />' . "\n";
 		}
 		
 		// Portal-spezifisches JS
 		if( ($portal_js_url = trim($this->iniRead('mobil.dateien.portal_js'))) != '') {
-			$head .= '<script src="'. $portal_js_url .'"></script>' . "\n";
+		    $head .= '<script src="'. $portal_js_url .'"></script>' . "\n";
 		}
-
+		
+		if($this->iniRead('cookiebanner', '') == 1) {
+		    /* ! $head .= '<script type="text/javascript">window.cookiebanner_html = \''.$this->iniRead('cookiebanner.html', '').'\'; </script>' . "\n";
+		     $head .= '<script src="/core20/cookiebanner.js"></script>' . "\n"; */
+		    
+		    global $wisyCore;
+		    $head .= '<script src="'.$wisyCore.'/lib/cookieconsent/cookieconsent.min.js'.'"></script>' . "\n";
+		}
+		
+		// Cookie Banner settings
+		if($this->iniRead('cookiebanner', '') == 1) {
+		    
+		    $head .= "<script>\n";
+		    $head .= "window.cookiebanner = {};\n";
+		    $head .= "window.cookiebanner.optoutCookies = \"{$this->iniRead('cookiebanner.cookies.optout', '')},fav,fav_init_hint\";\n";
+		    $head .= "window.cookiebanner.optedOut = false;\n";
+		    $head .= "window.cookiebanner.favOptoutMessage = \"{$this->iniRead('cookiebanner.fav.optouthinweis', 'Ihr Favorit konnte auf diesem Computer nicht gespeichert gewerden da Sie die Speicherung von Cookies abgelehnt haben. Sie k&ouml;nnen Ihre Cookie-Einstellungen in den Datenschutzhinweisen anpassen.')}\";\n";
+		    $head .= "window.cookiebanner.piwik = \"{$this->iniRead('analytics.piwik', '')}\";\n";
+		    $head .= "window.cookiebanner.uacct = \"{$this->iniRead('analytics.uacct', '')}\";\n";
+		    
+		    $head .= 'window.addEventListener("load",function(){window.cookieconsent.initialise({';
+		    
+		    $cookieOptions = array();
+		    $cookieOptions['type'] = 'opt-out';
+		    $cookieOptions['revokeBtn'] = '<div style="display:none;"></div>'; // Workaround for cookieconsent bug. Revoke cannot be disabled correctly at the moment
+		    $cookieOptions['position'] = $this->iniRead('cookiebanner.position', 'top-left');
+		    
+		    $cookieOptions['law'] = array();
+		    $cookieOptions['law']['countryCode'] = 'DE';
+		    
+		    $cookieOptions['cookie'] = array();
+		    $cookieOptions['cookie']['expiryDays'] = intval($this->iniRead('cookiebanner.cookiegueltigkeit', 7));
+		    
+		    $cookieOptions['content'] = array();
+		    $cookieOptions['content']['message'] = $this->iniRead('cookiebanner.hinweis.text', 'Wir verwenden Cookies, um Ihnen eine Merkliste sowie eine Seiten&uuml;bersetzung anzubieten und um Kursanbietern die Pflege ihrer Kurse zu erm&ouml;glichen. Indem Sie unsere Webseite nutzen, erkl&auml;ren Sie sich mit der Verwendung der Cookies einverstanden. Weitere Details finden Sie in unserer Datenschutzerkl&auml;rung.');
+		    
+		    $this->detailed_cookie_settings_merkliste = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.merkliste', ''))) > 3); // legacy compatibility
+		    $cookieOptions['content']['zustimmung_merkliste'] = $this->iniRead('cookiebanner.zustimmung.merkliste', false);
+		    
+		    $this->detailed_cookie_settings_onlinepflege = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.onlinepflege', ''))) > 3); // legacy compatibility
+		    $cookieOptions['content']['zustimmung_onlinepflege'] = $this->iniRead('cookiebanner.zustimmung.onlinepflege', false);
+		    
+		    $this->detailed_cookie_settings_translate = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.translate', ''))) > 3); // legacy compatibility
+		    $cookieOptions['content']['zustimmung_translate'] = $this->iniRead('cookiebanner.zustimmung.translate', false);
+		    
+		    $this->detailed_cookie_settings_analytics = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.analytics', ''))) > 3); // legacy compatibility
+		    $cookieOptions['content']['zustimmung_analytics'] = $this->iniRead('cookiebanner.zustimmung.analytics', false);
+		    
+		    $cookieOptions['content']['message'] = str_ireplace('__ZUSTIMMUNGEN__',
+		        '<ul class="cc-consent-details">'
+		        .($cookieOptions['content']['zustimmung_merkliste'] ? $this->addCConsentOption("merkliste", $cookieOptions) : '')
+		        .($cookieOptions['content']['zustimmung_onlinepflege'] ? $this->addCConsentOption("onlinepflege", $cookieOptions) : '')
+		        .($cookieOptions['content']['zustimmung_translate'] ? $this->addCConsentOption("translate", $cookieOptions) : '')
+		        .($cookieOptions['content']['zustimmung_analytics'] ? $this->addCConsentOption("analytics", $cookieOptions) : '')
+		        .'__ZUSTIMMUNGEN_SONST__'
+		        .'</ul>',
+		        $cookieOptions['content']['message']
+		        );
+		    
+		    global $wisyPortalEinstellungen;
+		    reset($wisyPortalEinstellungen);
+		    $allPrefix = 'cookiebanner.zustimmung.sonst';
+		    $allPrefixLen = strlen($allPrefix);
+		    foreach($wisyPortalEinstellungen as $key => $value)
+		    {
+		        if( substr($key, 0, $allPrefixLen)==$allPrefix )
+		        {
+		            $cookieOptions['content']['message'] = str_replace('__ZUSTIMMUNGEN_SONST__',
+		                $this->addCConsentOption("analytics", $key).'__ZUSTIMMUNGEN_SONST__',
+		                $cookieOptions['content']['message']);
+		        }
+		    }
+		    $cookieOptions['content']['message'] = str_replace('__ZUSTIMMUNGEN_SONST__', '', $cookieOptions['content']['message']);
+		    
+		    
+		    $cookieOptions['content']['message'] = str_ireplace('__HINWEIS_ABWAHL__',
+		        '<span class="hinweis_abwahl">'
+		        .$this->iniRead('cookiebanner.hinweis.abwahl', '(Option abw&auml;hlen, wenn nicht einverstanden)')
+		        .'</span>',
+		        $cookieOptions['content']['message']);
+		    
+		    $cookieOptions['content']['allow'] = $this->iniRead('cookiebanner.erlauben.text', 'OK', 1);
+		    $cookieOptions['content']['deny'] = $this->iniRead('cookiebanner.ablehnen.text', 'Ablehnen', 1);
+		    $cookieOptions['content']['link'] = $this->iniRead('cookiebanner.datenschutz.text', 'Mehr erfahren', 1);
+		    $cookieOptions['content']['href'] = $this->iniRead('cookiebanner.datenschutz.link', '');
+		    
+		    $cookieOptions['palette'] = array();
+		    $cookieOptions['palette']['popup'] = array();
+		    $cookieOptions['palette']['popup']['background'] = $this->iniRead('cookiebanner.hinweis.hintergrundfarbe', '#EEE');
+		    $cookieOptions['palette']['popup']['text'] = $this->iniRead('cookiebanner.hinweis.textfarbe', '#000');
+		    $cookieOptions['palette']['popup']['link'] = $this->iniRead('cookiebanner.hinweis.linkfarbe', '#3E7AB8');
+		    
+		    $cookieOptions['palette']['button']['background'] = $this->iniRead('cookiebanner.erlauben.buttonfarbe', '#3E7AB8');
+		    $cookieOptions['palette']['button']['text'] = $this->iniRead('cookiebanner.erlauben.buttontextfarbe', '#FFF');
+		    
+		    $cookieOptions['palette']['highlight']['background'] = $this->iniRead('cookiebanner.ablehnen.buttonfarbe', '#FFF');
+		    $cookieOptions['palette']['highlight']['text'] = $this->iniRead('cookiebanner.ablehnen.buttontextfarbe', '#000');
+		    
+		    $head .= trim(json_encode($cookieOptions, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES), '{}') . ',';
+		    
+		    // Callbacks for enabling / disabling Cookies
+		    $head .= 'onInitialise: function(status) {
+						var didConsent = this.hasConsented();
+						if(!didConsent) {
+							window.cookiebanner.optedOut = true;
+							updateCookieSettings();
+						}
+						callCookieDependantFunctions();
+					},
+					onStatusChange: function(status) {
+						var didConsent = this.hasConsented();
+						if(!didConsent) {
+							window.cookiebanner.optedOut = true;
+							updateCookieSettings();
+						}
+						callCookieDependantFunctions();
+					}';
+		    
+		    // Hide Revoke Button and enable custom revoke function in e.g. "Datenschutzhinweise"
+		    // Add an <a> tag with ID #wisy_cookieconsent_settings anywhere on your site. It will re-open the cookieconsent popup when clicked
+		    $head .= '},
+					function(popup){
+						popup.toggleRevokeButton(false);
+						window.cookieconsent.popup = popup;
+						jQuery("#wisy_cookieconsent_settings").on("click", function() {
+							window.cookieconsent.popup.open();
+							window.cookiebanner.optedOut = false;
+							updateCookieSettings();
+							return false;
+						});
+					}';
+		    
+		    $head .= ');
+		        
+			/* save detailed cookie consent status */
+				jQuery(".cc-btn.cc-allow").click(function(){
+					jQuery(".cc-consent-details input[type=checkbox]").each(function(){
+						var cname = jQuery(this).attr("name");
+						$.removeCookie(cname, { path: "/" });
+						if(jQuery(this).is(":checked")) {
+							setCookieSafely(cname, "allow", { expires:7});
+		        
+							if(cname == "cconsent_analytics") {
+								$.ajax(window.location.href); // call same page with analytics allowed to count this page view
+							}
+						}
+					});
+				});
+		        
+			});
+		        
+			'.($this->detailed_cookie_settings_merkliste ? "" : "window.cookiebanner_zustimmung_merkliste_legacy = 1;").'
+			'.($this->detailed_cookie_settings_onlinepflege ? "" : "window.cookiebanner_zustimmung_onlinepflege_legacy = 1;").'
+			'.($this->detailed_cookie_settings_translate ? "" : "window.cookiebanner_zustimmung_translate_legacy = 1;").'
+			    
+			</script>'."\n"; // end initialization of cookie consent window
+		}
+		
+		
 		// $mobil_html = "";
 
 		// Kopf an Stelle _HEAD__ ausgeben
