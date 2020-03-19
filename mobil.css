@@ -358,10 +358,7 @@ body.wisyp_kurs .fav_item { background-color: #eee; }
 
 #wisy_resulttabs { background-color: #fff; }
 
-#wisy_resulttabs li { display: block; float: left; width: 25%; }
-#wisy_resulttabs.tabcount3 li { width: 33%; }
-#wisy_resulttabs.tabcount2 li { width: 50%; }
-#wisy_resulttabs.tabcount1 li { width: 100%; }
+#wisy_resulttabs li { display: block; float: left; width: 33.3%; } /* 25% bei 4 Tabs (mit Karte) */
 
 #wisy_resulttabs li a { 
 	float: left;
@@ -733,4 +730,65 @@ body.wisyq_umkreis .wisy_beginn:before {
 
 .cc-compliance {
 	margin-top: 1em;
+}
+
+/*******************************************************************************
+Popup window
+*******************************************************************************/
+
+.hover_bkgr_fricc{
+    background:rgba(0,0,0,.4);
+    cursor:pointer;
+    display:none;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+.hover_bkgr_fricc .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_bkgr_fricc > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 60%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+.popupCloseButton:hover {
+    background-color: #ccc;
+}
+.trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
 }

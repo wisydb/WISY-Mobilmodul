@@ -61,8 +61,25 @@ function updateTabs() {
 		$('.wisy_resultsection.active').removeClass('active');
 		$($(this).attr('href')).addClass('active');
 		
-		if($("#wisy_map2").is(':visible') && gm_map == undefined) {
-			$("#wisy_map2").initWisyMap();
+		if($("#wisy_map2").is(':visible') && osm_map != undefined) {
+			// Karte wird erstmal nicht korrekt angezeigt, da sie in einem
+			// versteckten Container gerendert wird. Deshalb nachdem Einblenden:
+
+			// 1. Karte auffordern sich an den Container anzupassen
+			osm_map.invalidateSize(false);
+			
+			// 2. Karte korrekt zentrieren und zoomen
+			if( osm_mark_lat.length == 1 ) {
+				osm_map.setView([osm_mark_lat[0], osm_mark_lng[0]], 16);
+			}
+			else {
+				var bounds = new L.LatLngBounds();
+				for( var i = 0; i < osm_mark_lat.length; i++ ) {
+					var point = new L.LatLng(osm_mark_lat[i], osm_mark_lng[i]);
+					bounds.extend(point);
+				}
+				osm_map.fitBounds(bounds);
+			}
 		}
 
 		return false;
@@ -888,3 +905,17 @@ if ( browser.chrome ) {
 }
 
 jQuery.browser = browser;
+
+/*****************************************************************************
+ * info text popup
+ *****************************************************************************/
+
+ $(window).load(function () {
+    $('.hover_bkgr_fricc').show();
+    $('.popupCloseButton').click(function(){
+        $('.hover_bkgr_fricc').hide();
+
+        if(window.cookieconsent.popup)
+         window.cookieconsent.popup.open();
+    });
+ });

@@ -24,14 +24,14 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		// Link geklickt: Umschalten auf Mobilversion 
 		if(isset($_GET['immermobil'])) {
 			if(!$_COOKIE['immermobil']) {
-				setcookie('immermobil', true, time()+86400);	// bleibt 24h in Mobilmodus, wenn nicht "zur�ck zu Desktopversion" geklickt
+				setcookie('immermobil', true, time()+86400);	// bleibt 24h in Mobilmodus, wenn nicht "zurueck zu Desktopversion" geklickt
 			}
 			$showMobile = true;
 		}
 
 		// Link geklickt: Umschalten auf Desktopversion
 		if(isset($_GET['nomobile'])) {
-			setcookie("immermobil", "", time()-3600);		// Mobilversion-Cookie l�schen
+			setcookie("immermobil", "", time()-3600);		// Mobilversion-Cookie loeschen
 			$showMobile = false;
 		}
 
@@ -51,7 +51,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 	
 	function getTitleString($pageTitleNoHtml)
 	{
-		// Nicht mobil? Trotzdem Sonderbehandlung f�r Favprint-Seitenaufrufe:
+		// Nicht mobil? Trotzdem Sonderbehandlung fuer Favprint-Seitenaufrufe:
 		// Sonderfall Favprint: Unsch�ner Seitentitel bei Aufruf der vom Mobiltelefon verschickten Kurslisten-URL etwas sch�ner durch K�rzung
 		// get the title as a no-html-string
 		global $wisyPortalKurzname;
@@ -71,7 +71,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		global $showMobile;
 		if(!$showMobile) return parent::getPrologue($param);
 		
-		// Einstellungen f�r Spalten anhand mobil.spalten �berschreiben, falls gesetzt
+		/* // Einstellungen fuer Spalten anhand mobil.spalten ueberschreiben, falls gesetzt
 		$mobilspalten = $this->iniRead('mobil.spalten');
 
 		if(trim($mobilspalten) != '') {
@@ -87,7 +87,7 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 			if( strpos($mobilspalten, 'bunummer,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 128;
 			if( strpos($mobilspalten, 'bildungsgutschein,'	)!==false ) $GLOBALS['wisyPortalSpalten'] += 256;
 			if( strpos($mobilspalten, 'foerderung,'			)!==false ) $GLOBALS['wisyPortalSpalten'] += 512;
-		}
+		} */
 		
 		// HTML-Template aus Datei einlesen
 		$mobil_html_file = trim($this->iniRead('mobil.dateien.html'));
@@ -169,6 +169,9 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		    
 		    $cookieOptions['content'] = array();
 		    $cookieOptions['content']['message'] = $this->iniRead('cookiebanner.hinweis.text', 'Wir verwenden Cookies, um Ihnen eine Merkliste sowie eine Seiten&uuml;bersetzung anzubieten und um Kursanbietern die Pflege ihrer Kurse zu erm&ouml;glichen. Indem Sie unsere Webseite nutzen, erkl&auml;ren Sie sich mit der Verwendung der Cookies einverstanden. Weitere Details finden Sie in unserer Datenschutzerkl&auml;rung.');
+		    
+		    $this->detailed_cookie_settings_popuptext = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.popuptext', ''))) > 3); // legacy compatibility
+		    $cookieOptions['content']['zustimmung_popuptext'] = $this->iniRead('cookiebanner.zustimmung.popuptext', false);
 		    
 		    $this->detailed_cookie_settings_merkliste = boolval(strlen(trim($this->iniRead('cookiebanner.zustimmung.merkliste', ''))) > 3); // legacy compatibility
 		    $cookieOptions['content']['zustimmung_merkliste'] = $this->iniRead('cookiebanner.zustimmung.merkliste', false);
@@ -274,22 +277,36 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 						var cname = jQuery(this).attr("name");
 						$.removeCookie(cname, { path: "/" });
 						if(jQuery(this).is(":checked")) {
-							setCookieSafely(cname, "allow", { expires:7});
-		        
-							if(cname == "cconsent_analytics") {
-								$.ajax(window.location.href); // call same page with analytics allowed to count this page view
+							setCookieSafely(cname, "allow", { expires:'.$cookieOptions['cookie']['expiryDays'].'});';
+							
+							if(!$this->iniRead("cookiebanner.zustimmung.analytics.autoload", 0)) {
+								$head .= '
+										if(cname == "cconsent_analytics") {
+											$.ajax({ url: window.location.href, dataType: \'html\'}); // call same page with analytics allowed, since now allowed to count this page view // dataType html makes sure scripts are loaded
+										}';
 							}
+							
+				$head .= '
 						}
 					});
 				});
-		        
+				
 			});
-		        
+		    
+            '.($this->detailed_cookie_settings_popuptext ? "" : "window.cookiebanner_zustimmung_popuptext_legacy = 1;").'
 			'.($this->detailed_cookie_settings_merkliste ? "" : "window.cookiebanner_zustimmung_merkliste_legacy = 1;").'
 			'.($this->detailed_cookie_settings_onlinepflege ? "" : "window.cookiebanner_zustimmung_onlinepflege_legacy = 1;").'
 			'.($this->detailed_cookie_settings_translate ? "" : "window.cookiebanner_zustimmung_translate_legacy = 1;").'
 			    
 			</script>'."\n"; // end initialization of cookie consent window
+				
+			// count first visit / page view without interaction
+			if( $this->iniRead("cookiebanner.zustimmung.analytics.essentiell", 0) &&  $this->iniRead("cookiebanner.zustimmung.analytics.autoload", 0) && !isset($_COOKIE['cookieconsent_status']) ) {
+			    $head .= '<script>';
+			    $head .= 'setCookieSafely("cconsent_analytics", "allow", { expires:'.$cookieOptions['cookie']['expiryDays'].' });'." \n";
+			    $head .= '$.ajax({ url: window.location.href, dataType: \'html\'});'." \n"; // call same page with analytics allowed to count this page view
+			    $head .= '</script>';
+			}
 		}
 		
 		
@@ -301,9 +318,9 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		// Embed __BODYCLASSES__ -> Body Klassen
 		$mobil_html = str_replace('__BODYCLASSES__', $this->getBodyClasses($param['bodyClass']), $mobil_html);
 		
-		// Link "Zur�ck zur Desktopversion" einblenden.
-		if(isset($_GET['immermobil']) || $_COOKIE['immermobil']) {
-			$mobil_html = str_replace('__HEADERCONTENT__', '<a href="/?nomobile=1" class="zurdesktopversion">'.$this->iniRead('mobil.html.desktoplink.text').'</a>__HEADERCONTENT__', $mobil_html);
+		// Link "Zurueck zur Desktopversion" einblenden.
+		if($_COOKIE['immermobil']) {
+		    $mobil_html = str_replace('__HEADERCONTENT__', '<a href="/?nomobile=1" style="text-decoration: none; font-weight:bold;" class="zurdesktopversion">'.$this->iniRead('mobil.html.desktoplink.text').'</a>__HEADERCONTENT__', $mobil_html);
 		}
 
 		// HEADERCONTENT
@@ -465,6 +482,84 @@ class MOBIL_FRAMEWORK_CLASS extends WISY_FRAMEWORK_CLASS
 		echo $this->replacePlaceholders( $this->iniRead('searcharea.below', '') );
 
 		echo $this->getsubheadercontent("postsearch");
+		
+		echo $this->getAnalytics();
+		
+		echo $this->getPopup();
+	}
+	
+	function getPopup() {
+	    $ret = "";
+	    
+	    // if cookie popuptext denied or not set (first page view) show text popup if activated and text available
+	    if( $this->iniRead('popup', false) && strlen(trim($this->iniRead('popup.text', ''))) && ( (isset($_COOKIE['cconsent_popuptext']) && $_COOKIE['cconsent_popuptext'] == 'deny') || !isset($_COOKIE['cconsent_popuptext'])) )
+	        $ret = '
+				<div class="hover_bkgr_fricc">
+						<span class="helper"></span>
+							<div>
+        <div class="popupCloseButton">&times;</div>
+        <p>'.trim($this->iniRead('popup.text', '')).'</p>
+							</div>
+				</div>';
+	        
+	        return $ret;
+	}
+	
+	function getAnalytics() {
+	    $ret = "\n";
+	    
+	    $uacct = $this->iniRead('analytics.uacct', '');
+	    if( $uacct != '' )
+	    {
+	        $ret .= '
+				<script>
+				'.($this->detailed_cookie_settings_analytics ? 'var optedOut = ($.cookie("cconsent_analytics") != "allow");' : ' var optedOut = (document.cookie.indexOf("cookieconsent_status=deny") > -1);').'
+				    
+				if (!optedOut) {
+					(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
+						(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+						m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");
+					ga("create", "' . $uacct . '", "none");
+					ga("set", "anonymizeIp", true);
+					ga("send", "pageview");
+				} else {
+					/* console.log("No Analytics: opted out"); */
+				}
+				</script>';
+	    }
+	    
+	    $piwik = ($this->detailed_cookie_settings_analytics ? $_COOKIE['cconsent_analytics'] == 'allow' : $this->iniRead('analytics.piwik', ''));
+	    if( $piwik != '' )
+	    {
+	        if( strpos($piwik, ',')!==false ) {
+	            list($piwik_site, $piwik_id) = explode(',', $piwik);
+	        }
+	        else {
+	            $piwik_site = 'statistik.kursportal.info';
+	            $piwik_id = $piwik;
+	        }
+	        
+	        $ret .= "
+				<!-- Matomo -->
+				<!-- analytics.piwik -->
+				<script type=\"text/javascript\">
+						var _paq = window._paq || [];
+						_paq.push(['trackPageView']);
+						_paq.push(['enableLinkTracking']);
+						(function() {
+								var u=\"//".$piwik_site."/\";
+								_paq.push(['setTrackerUrl', u+'matomo.php']);
+								_paq.push(['setSiteId', ".$piwik_id."]);
+								var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+								g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+						})();
+				</script>
+				<!-- /analytics.piwik -->
+				<!-- End Matomo Code -->
+				";
+	    }
+	    return $ret;
 	}
 
 
