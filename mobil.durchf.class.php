@@ -100,7 +100,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			$stadtteil	= stripslashes($record['stadtteil']);
 			$land		= stripslashes($record['land']);
 			
-			// Link zu Ort auf Google Maps Extern auf Detailseite anzeigen, falls
+			/* ? // Link zu Ort auf Google Maps Extern auf Detailseite anzeigen, falls
 			// 	mobil.kursdetails.durchf.maplink = 1
 			if(trim($this->framework->iniRead('mobil.kursdetails.durchf.maplink')) == 1 && $ort && $strasse) {
 				$maps_ort = $strasse;
@@ -112,25 +112,25 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 					$maps_ort .= ', Deutschland';
 				}
 				$mapslink_html = ' <a class="wisy_ort_maplink" target="_blank" href="http://maps.google.com/maps?q=' . urlencode($maps_ort) .' ">Adresse in Google Maps</a>';
-			}
+			} */
 			
 			if( $ort && $stadtteil ) {
-				if( strpos($ort, $stadtteil)===false ) {
-					$ort = '<strong>'. isohtmlentities($ort) . '</strong>-' . isohtmlentities($stadtteil);
-				}
-				else {
-					$ort = '<strong>'. isohtmlentities($ort) .'</strong>';
-				}
+			    if( strpos($ort, $stadtteil)===false ) {
+			        $ort = '<strong>'. isohtmlentities($ort) . '</strong>-' . isohtmlentities($stadtteil);
+			    }
+			    else {
+			        $ort = '<strong>'. isohtmlentities($ort) .'</strong>';
+			    }
 			}
 			else if( $ort ) {
-				$ort = '<strong>'. isohtmlentities($ort) .'</strong>';
+			    $ort = '<strong>'. isohtmlentities($ort) .'</strong>';
 			}
 			else if( $stadtteil ) {
-				$ort = isohtmlentities($stadtteil);
-				$stadt = $stadtteil;
+			    $ort = isohtmlentities($stadtteil);
+			    $stadt = $stadtteil;
 			}
 			if($strasse) {
-				$strasse_html = '<span class="wisy_strasse">' . $strasse . '</span>';
+			    $strasse_html = '<span class="wisy_strasse">' . $strasse . '</span><br><a href="https://www.google.de/maps?q='.urlencode(str_replace("<br>", " ", utf8_encode($strasse.", ".strip_tags($ort)))).'" target="_blank">In Google Maps anzeigen &rarr;</a>';
 			}
 			
 			if( is_object($this->framework->map) )
@@ -160,7 +160,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 			if($details) {
 				$ort_output = $ort? '<br /><span class="wisy_ort">' . $ort . '</span>' : '';
 				if($strasse_html) $ort_output .= ', ' . $strasse_html;
-				if($mapslink_html) $ort_output .= $mapslink_html;
+				// ? if($mapslink_html) $ort_output .= $mapslink_html;
 			} else {
 				echo $ort? ', <span class="wisy_ort">' . $ort . '</span>' : '';
 			}
@@ -182,7 +182,7 @@ class MOBIL_DURCHF_CLASS extends WISY_DURCHF_CLASS
 		// DAUER
 		if (($wisyPortalSpalten & 4) > 0)
 		{
-			echo $this->formatDauer($record['dauer'], $record['stunden'], '<span class="wisy_dauer"> %1</span>', '<span class="wisy_stunden"> (%1)</span>');
+		    echo $this->formatDauer($record['dauer'], $record['stunden'], ' <span class="wisy_dauer">%1</span>', '&nbsp;<span class="wisy_stunden">(%1)</span>');
 		}
 		
 		// TEILNEHMER

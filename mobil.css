@@ -667,12 +667,18 @@ body.wisyq_umkreis .wisy_beginn:before {
 }
 
 /* Cookiebanner */
+
 .cc-window ul li {
 	list-style: none;
 	padding-left: .2em;
 	margin-top: .5em;
 	font-weight: 600;
 	font-size: 1em;
+}
+
+.cc-window ul li.disabled {
+  font-weight: 100;
+  color: #555;
 }
 
 .cc-window ul li div.consent_option_infos {
@@ -684,6 +690,10 @@ body.wisyq_umkreis .wisy_beginn:before {
 .cc-window ul li .importance {
 	font-weight: 100;
 	font-size: .8em;
+}
+
+.cc-window ul li.disabled .importance {
+	color: #555;
 }
 
 .cc-window .hinweis_abwahl {
@@ -707,7 +717,7 @@ body.wisyq_umkreis .wisy_beginn:before {
 
 .cc-window {
 	padding: 1em;
-	width: 95vW;
+	width: 99vW;
 	font-size: 1.6em;
 	border: 2px solid white;
 	position: fixed;
@@ -791,4 +801,39 @@ Popup window
     margin: 20px;
     display: inline-block;
     font-weight: bold;
+}
+
+.hover_bkgr_fricc > div {
+	width: 80%;
+}
+
+.cc-window.cc-floating {
+	overflow-y: scroll;
+	max-height: 90vH;
+	padding-bottom: 5em;
+}
+
+.toggle_cookiedetails.inactive::after {
+ content: " anzeigen..." !important;
+}
+
+.toggle_cookiedetails::after {
+ content: " ausblenden..." !important;
+}
+
+.toggle_cookiedetails {
+    color: #444 !important;
+    text-decoration: underline;
+}
+
+.cc-link {
+ color: rgb(28, 88, 151) !important;
+}
+
+.cookies_techdetails.inactive {
+ display: none;
+}
+
+.cc-allow-all.inactive {
+ display: none;	
 }
